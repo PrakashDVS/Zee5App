@@ -1,11 +1,16 @@
 package service;
 
+import java.util.List;
+import java.util.Optional;
+
 import dto.Subscription;
+import exception.IdNotFoundException;
+import exception.InvalidAmountException;
 
 public interface Subservice2 {
-	public String addSubscription(Subscription subscription);
-	public String updateSubscription(String id);
-	public Subscription getSubscriptionById(String id);
-	public Subscription[] getAllSubscription();
-	public String deleteSubscriptionById(String id);
+	public String addSubscription(Subscription subscription) throws InvalidAmountException;
+	public String deleteSubscription(String id) throws IdNotFoundException;
+	public String modifySubscription(String id, Subscription subscription);
+	public Optional<Subscription> getSubscriptionById(String id) throws IdNotFoundException;
+	public List<Subscription> getAllSubscription();
 }

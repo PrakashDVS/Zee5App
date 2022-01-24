@@ -3,9 +3,17 @@ package app;
 import service.impl.MovieServiceimpl;
 import service.impl.SeriesServiceimpl;
 import service.impl.Subserviceimpl;
+
+import java.util.Optional;
+
 import dto.Movie;
 import dto.Series;
 import dto.Subscription;
+import exception.IdNotFoundException;
+import exception.InvalidAmountException;
+import exception.InvalidIdLengthException;
+import exception.InvalidNameException;
+import exception.NameNotFoundException;
 import service.MovieService2;
 import service.Movieservice;
 import service.SeriesService2;
@@ -15,87 +23,201 @@ import service.Subservice2;
 
 public class Main {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-       Subservice service1=Subservice.getInstance();
-       Movieservice service2=Movieservice.getInstance();
-       Seriesservice service3=Seriesservice.getInstance();
-       
-	    for(int i=1;i<=10;i++) {
-	      Subscription subscription2=new Subscription();
-	      subscription2.setId("sm03"+i);
-	      subscription2.setType("premium"+i);
-	      subscription2.setDop("05-08-2021"+i);
-	      subscription2.setStatus("Active"+i);
-	      subscription2.setCountry("India"+i);
-	      subscription2.setPaymentmode("UPI"+i);
-	      subscription2.setAutorenewal("INActive"+i);
-	      subscription2.setDoe("04-08-2022"+i);
-	      String result=service1.addSubscription(subscription2);
-	      System.out.println(result);
-	    
-	    }
-	    
-	    for(int i=1;i<=10;i++) {
-		      Movie movie2=new Movie();
-		      movie2.setMid("m03"+i);
-		      movie2.setMcat("Action"+i);
-		      movie2.setMdor("09-08-2021"+i);
-		      movie2.setMname("SLN"+i);
-		      movie2.setMlanguage("Telugu"+i);
-		      movie2.setMlength("2hrs"+i);
-		      movie2.setMtrailer("www.youtube.com"+i);
-		      movie2.setMcast("hero"+i);
-		      String result=service2.addMovie(movie2);
-		      System.out.println(result);
-		    
-		    }
-	    for(int i=1;i<=10;i++) {
-	    	  Series series2=new Series();
-	    	  series2.setSid("s03"+i);
-	    	  series2.setScat("comedy"+i);
-	    	  series2.setSdor("26-04-2021"+i);
-	    	  series2.setSname("Baker&Beauty"+i);
-	    	  series2.setSlanguage("Telugu"+i);
-	    	  series2.setSlength("1hrs"+i);
-	    	  series2.setStrailer("www.youtube.com"+i);
-	    	  series2.setScast("heroine"+i);
-		      String result=service3.addSeries(series2);
-		      System.out.println(result);
-		    
-		    }
-	    
-	    
-	    for(Subscription subscription3:service1.getAllsubscription()) {
-	    	if(subscription3!=null)
-	    	 System.out.println(subscription3);
-	    }
-	    System.out.println(service1.updateSubscription("sm031"));
-	    System.out.println(service1.getSubscriptionById("sm031"));
-	    System.out.println(service1.deleteSubscription("sm031"));
-	    System.out.println(service1.getSubscriptionById("sm031"));
-	    
-	    for(Movie movie3:service2.getAllMovies()) {
-	    	if(movie3!=null)
-	    	 System.out.println(movie3);
-	    }
-	    System.out.println(service2.updateMovie("m031"));
-	    System.out.println(service2.getMovieById("m031"));
-	    System.out.println(service2.deleteMovie("m031"));
-	    System.out.println(service2.getMovieById("m031"));
-	    
-	    for(Series series3:service3.getAllSeries()) {
-	    	if(series3!=null)
-	    	 System.out.println(series3);
-	    }
-	    System.out.println(service3.updateSeries("s031"));
-	    System.out.println(service3.getSeriesById("s031"));
-	    System.out.println(service3.deleteSeries("s031"));
-	    System.out.println(service3.getSeriesById("s031"));
-	}
-	Subservice2 service = Subserviceimpl.getInstance();
-	MovieService2 service2 = MovieServiceimpl.getInstance();
-	SeriesService2 service3 = SeriesServiceimpl.getInstance();
-	
 
-}
+		public static void main(String[] args) throws 
+		InvalidIdLengthException, InvalidNameException, InvalidAmountException, IdNotFoundException {
+			// TODO Auto-generated method stub
+			
+			
+			
+			//String result1  = service.addUser(register);
+			//System.out.println(result1+"checkpoint1");
+			
+			//System.out.println(service.getUserById("rg00001").get()+"checkpoint2");
+			
+			
+			
+			// we dont introduce private here to make it accessible
+			//now this line can connect to different files with UserServiceImpl2 and so on
+			
+			// main is consuming the service
+			// if we even call this 100 times it will create only 1 object now
+			
+			// now only id part in register will not be show other
+			
+			
+			System.out.println("\n  SUBSCRIPTION\n");
+				
+				
+			Subservice2 service2 = Subserviceimpl.getInstance();
+			
+			for(int i =1; i<=3;i++) {
+				Subscription subscription = new Subscription();
+				try {
+				subscription.setId("sub00"+i);
+				}
+				catch (InvalidIdLengthException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				subscription.setAutoRenewal(null);
+				subscription.setDateOfPurchase(null);
+				subscription.setExpiryDate(null);
+				try {
+					subscription.setAmount(1500);
+				} catch (InvalidAmountException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				subscription.setPaymentMode(null);
+				subscription.setStatus(null);
+				subscription.setType(null);
+				
+				String result = service2.addSubscription(subscription);
+				//System.out.println(result);
+				
+			}
+
+			
+			for (Subscription subscription : service2.getAllSubscription()) {
+				if(subscription!=null)
+				    System.out.println(subscription);
+						
+			}
+			
+			try {
+				Optional<Subscription> optional = service2.getSubscriptionById("sub001");
+				System.out.println(optional);
+			} catch (IdNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println("id not found");
+				e.printStackTrace();
+			}
+			
+			try {
+				service2.deleteSubscription("sub001");
+			} catch (IdNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			System.out.println("\n MOVIES\n");
+			
+			MovieService2 service3 = MovieServiceimpl.getInstance();
+			for(int i =1; i<=5;i++) {
+				Movie movie = new Movie();
+				try {
+				movie.setId("mov00"+i);
+				}
+				catch (InvalidIdLengthException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					movie.setMovieName("abc"+i);
+				} catch (NameNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				movie.setAgeLimit(null);
+				movie.setCast(new String[] {"hrk","abt","tdc","sdf"});
+				movie.setGenre("action"+i);
+				movie.setLength(null);
+				movie.setReleaseDate(null);
+				movie.setTrailer(null);
+				String result = service3.addMovie(movie);
+				//System.out.println(result);
+				
+			}
+			
+			for (Movie movie : service3.getAllMovie()) {
+				if(movie!=null)
+				 System.out.println(movie);
+						
+			}
+			
+			try {
+				Optional<Movie> optional = service3.getMovieById("mov001");
+				System.out.println(optional);
+			} catch (IdNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println("id not found");
+				e.printStackTrace();
+			}
+			
+			try {
+				service3.deleteMovie("mov001");
+			} catch (IdNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			System.out.println("\n SERIES\n");
+			
+			SeriesService2 service4 = SeriesServiceimpl.getInstance();
+			for(int i =1; i<=7;i++) {
+				Series series = new Series();
+				series.setId("sr000"+i);
+				try {
+					series.setSeriesName("xyz"+i);
+				} catch (NameNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				series.setAgeLimit(null);
+				series.setCast(new String[] {"ytd","efd","gfh","trd"});
+				series.setGenre("thriller"+i);
+				series.setLength(null);
+				series.setReleaseDate(null);
+				series.setTrailer(null);
+				String result = service4.addSeries(series);
+				//System.out.println(result);
+				
+			}
+			
+			for (Series series : service4.getAllSeries()) {
+				if(series!=null)
+				 System.out.println(series);
+						
+			}
+			
+			
+			try {
+				Optional<Series> optional = service4.getSeriesById("sr0001");
+				System.out.println(optional);
+			} catch (IdNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println("id not found");
+				e.printStackTrace();
+			}
+			
+			try {
+				service4.deleteSeries("sr0001");
+			} catch (IdNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			System.out.println("\nAfter updatig the series");
+			
+			try {
+				Series series5 = new Series("sr0012","xyz12",null,null,null,null,null,null);
+				service4.modifySeries("sr0002", series5);
+			} catch (NameNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InvalidIdLengthException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			//this gives an error now coz its an interface thing
+			//UserRepository repository = new UserRepository();
+			
+			//UserRepository repository = null;
+		    
+			service4.getAllSeries().forEach(e->System.out.println(e));
+
+		}
+
+	}

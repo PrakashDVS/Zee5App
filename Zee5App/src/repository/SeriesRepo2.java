@@ -1,11 +1,15 @@
 package repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import dto.Series;
+import exception.IdNotFoundException;
 
 public interface SeriesRepo2 {
-	public String addSeries(Series series);
-	public String updateSeries(String id);
-	public Series getSeries(String id);
-	public Series[] getAllSeries();
-	public String deleteSeries(String id);
+	public String addSeries(Series series); 
+	public String deleteSeries(String id) throws IdNotFoundException;
+	public String modifySeries(String id, Series series) throws IdNotFoundException;
+	public Optional<Series> getSeriesById(String id) throws IdNotFoundException;
+	public List<Series> getAllSeries();
 }
