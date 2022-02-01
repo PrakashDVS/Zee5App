@@ -1,6 +1,7 @@
 package service.impl;
 
 import java.io.IOException;
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,28 +14,28 @@ import exception.InvalidPasswordException;
 import repository.UserRepository;
 import repository.impl.UserRepositoryImpl;
 import service.UserService;
-
+@Service
 public class UserServiceImpl implements UserService {
 	
-	private UserServiceImpl()  throws IOException {
-		// TODO Auto-generated constructor stub
-	}
-	
-	private static UserService service;
-	
-	
-	public static UserService getInstance() throws IOException {
-		
-		if(service==null) {
-			service = new UserServiceImpl();
-		}
-		
-		return service;
-	}
+//	private UserServiceImpl()  throws IOException {
+//		// TODO Auto-generated constructor stub
+//	}
+//	
+//	private static UserService service;
+//	
+//	
+//	public static UserService getInstance() throws IOException {
+//		
+//		if(service==null) {
+//			service = new UserServiceImpl();
+//		}
+//		
+//		return service;
+//	}
 	
 	//UserRepository userRepository ;
 
-	UserRepository userRepository  =  UserRepositoryImpl.getInstance();
+	private static UserRepository userRepository;
 	@Override
 	public String addUser(Register register) {
 		// TODO Auto-generated method stub

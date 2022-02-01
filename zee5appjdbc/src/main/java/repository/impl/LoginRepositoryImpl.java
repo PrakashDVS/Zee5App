@@ -1,35 +1,48 @@
 package repository.impl;
 
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import javax.sql.DataSource;
 
 import dto.Login;
 import dto.ROLE;
 import repository.LoginRepository;
 import repository.UserRepository;
 import utils.DBUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class LoginRepositoryImpl implements LoginRepository {
 
-	DBUtils dbUtils = null;
-	private static LoginRepository loginRepository;
-
+//	DBUtils dbUtils = null;
+//	private static LoginRepository loginRepository;
+@Autowired
+DataSource  dataSource;
 	private LoginRepositoryImpl() throws IOException {
-		dbUtils = DBUtils.getInstance();
+//		dbUtils = DBUtils.getInstance();
 	}
 
-	public static LoginRepository getInstance() throws IOException {
-		if (loginRepository == null)
-			loginRepository = new LoginRepositoryImpl();
-		return loginRepository;
-	}
+//	public static LoginRepository getInstance() throws IOException {
+//		if (loginRepository == null)
+//			loginRepository = new LoginRepositoryImpl();
+//		return loginRepository;
+//	}
 
 	@Override
 	public String addCredentials(Login login) {
 		// TODO Auto-generated method stub
-		Connection connection = dbUtils.getConnection();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		PreparedStatement preparedStatement;
 
 		String insertStatetment = "insert into login (userName,password,regId,role) values(?,?,?,?)";
@@ -71,7 +84,13 @@ public class LoginRepositoryImpl implements LoginRepository {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		String deleteStatetment = "delete from login where userName=?";
-		connection = dbUtils.getConnection();
+		try{
+			connection = dataSource.getConnection();
+		}
+		catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		try {
 			preparedStatement = connection.prepareStatement(deleteStatetment);
 			preparedStatement.setString(1, userName);
@@ -95,10 +114,12 @@ public class LoginRepositoryImpl implements LoginRepository {
 			}
 			e.printStackTrace();
 			return "fail";
-		} finally {
-			dbUtils.closeConnection(connection);
-		}
+		} 
 	}
+//		finally {
+//			dbUtils.closeConnection(connection);
+//		}
+//	}
 
 	@Override
 	public String changePassword(String userName, String password) {
@@ -109,7 +130,13 @@ public class LoginRepositoryImpl implements LoginRepository {
 	@Override
 	public String changeRole(String userName, ROLE role) {
 		// TODO Auto-generated method stub
-		Connection connection = dbUtils.getConnection();
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		String updateStmt = "UPDATE login set role=? WHERE userName = ?";
 		PreparedStatement preparedStatement;
 		try {
@@ -135,9 +162,10 @@ public class LoginRepositoryImpl implements LoginRepository {
 			}
 			e.printStackTrace();
 			return "fail";
-		} finally {
-			dbUtils.closeConnection(connection);
-		}
+		} 
+//		finally {
+//			dbUtils.closeConnection(connection);
+//		}
 	}
 
 }

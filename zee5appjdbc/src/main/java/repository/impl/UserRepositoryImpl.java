@@ -1,6 +1,7 @@
 package repository.impl;
 
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +22,11 @@ import repository.LoginRepository;
 import repository.UserRepository;
 import utils.DBUtils;
 import utils.PasswordUtils;
+import org.springframework.stereotype.Repository;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+@Repository // it will create singleton object
 
 public class UserRepositoryImpl implements UserRepository {
 	
@@ -54,16 +60,19 @@ public class UserRepositoryImpl implements UserRepository {
 //	private Set<Register> set = new TreeSet<>(); 
 //	private TreeSet<Register> set = new TreeSet<>();
 	
-	DBUtils dbUtils = DBUtils.getInstance();
-	LoginRepository loginrepository = LoginRepositoryImpl.getInstance();
-	
+//	DBUtils dbUtils = DBUtils.getInstance();
+//	LoginRepository loginrepository = LoginRepositoryImpl.getInstance();
+	@Autowired // it will bring already created object by using name / type
+	DataSource dataSource;
+	@Autowired
+	LoginRepository loginRepository ;
 	//private static int count = -1;
 	
 	
 	//now we make an singleton object for this
 	private UserRepositoryImpl() throws IOException{
-		dbUtils = DBUtils.getInstance();
-		loginrepository = LoginRepositoryImpl.getInstance();
+//		dbUtils = DBUtils.getInstance();
+//		loginrepository = LoginRepositoryImpl.getInstance();
 	}
 	
 	//we cant declare/create objects for interface
@@ -73,22 +82,27 @@ public class UserRepositoryImpl implements UserRepository {
 	//w we can only access the interface overridden methods
 	
 	//we use UserRepository here coz we need reference sfrom UserRepository(interface class) not the impl thing.
-	private static UserRepository repository;
-	public static UserRepository getInstance() throws IOException {
-		if(repository ==null)
-			//but we refer using interface only i.e.
-			//repository = new UserRepository()
-			// we can only access interface methods
-			
-			// this will use functionalities of the interface and both class only
-			repository = new UserRepositoryImpl();
-		return repository;
-	}
+//	private static UserRepository repository;
+//	public static UserRepository getInstance() throws IOException {
+//		if(repository ==null)
+//			//but we refer using interface only i.e.
+//			//repository = new UserRepository()
+//			// we can only access interface methods
+//			
+//			// this will use functionalities of the interface and both class only
+//			repository = new UserRepositoryImpl();
+//		return repository;
+//	}
 	@Override
 	public String addUser(Register register) {
 		// TODO Auto-generated method stub
 		//the user details should be stored in database
 		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		PreparedStatement preparedStatement = null;
 		String insertStatement = "insert into register"+
 		       "(regID, firstname, lastname, email, contactnumber, password)"
@@ -98,7 +112,7 @@ public class UserRepositoryImpl implements UserRepository {
 		//here we will provide the values against ?(placeholder)
 		
 		//connection object
-		connection = dbUtils.getConnection();
+//		connection = dbUtils.getConnection();
 		
 		try {
 			preparedStatement = connection.prepareStatement(insertStatement);
@@ -127,10 +141,11 @@ public class UserRepositoryImpl implements UserRepository {
 			// delete 3 : 3 rows deleted
 			
 			if(result>0) {
+				connection.commit();
 				Login login = new Login(register.getEmail(), encryptedPassword, register.getId(), ROLE.ROLE_USER);
 				
 				
-				String result2 = loginrepository.addCredentials(login);
+				String result2 = loginRepository.addCredentials(login);
 				if(result2.equals("success")) {
 					//connection.commit();
 					return "user added successfully";
@@ -156,27 +171,67 @@ public class UserRepositoryImpl implements UserRepository {
 			}
 			return "failure";
 		}
-		finally {
-			//closure work
-			dbUtils.closeConnection(connection);
-		}
+//		finally {
+//			//closure work
+//			dbUtils.closeConnection(connection);
+//		}
 	}
 	
 	@Override
 	public String updateUser(String id, Register register) throws IdNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+		PreparedStatement preparedStatement = null;
+
+		String insertStatetment = "UPDATE register SET firstName=?,lastName=? where regId=?";
+
+		try {
+			preparedStatement = connection.prepareStatement(insertStatetment);
+
+			// adding fields to the '?' placeholder
+			preparedStatement.setString(1, register.getFirstName());
+			preparedStatement.setString(2, register.getLastName());
+			preparedStatement.setString(3, register.getId());
+
+			int result = preparedStatement.executeUpdate();
+
+			if (result > 0) {
+				connection.commit();
+				return "success";
+			} else {
+				connection.rollback();
+				return "fail";
+			}
+
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+			return "fail";
+		}
 	}
 	
 	@Override
 	public Optional<Register> getUserById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidEmailException, InvalidPasswordException, InvalidNameException {
 		// TODO Auto-generated method stub
 		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		String selectStatement = "select * from register where regId=?";
 		
-		connection = dbUtils.getConnection();
+//		connection = dbUtils.getConnection();
 		
 		try {
 			preparedStatement = connection.prepareStatement(selectStatement);
@@ -210,10 +265,10 @@ public class UserRepositoryImpl implements UserRepository {
 			e.printStackTrace();
 			//return "fail12";
 		}
-		finally {
-			//closure work
-			dbUtils.closeConnection(connection);
-		}
+//		finally {
+//			//closure work
+//			dbUtils.closeConnection(connection);
+//		}
 		return Optional.empty();
 	}
 	
@@ -242,7 +297,11 @@ public class UserRepositoryImpl implements UserRepository {
 		
 		String selectStatement = "select * from register";
 		
-		connection = dbUtils.getConnection();
+		try {
+			connection = dataSource.getConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 		
 		try {
 			preparedStatement = connection.prepareStatement(selectStatement);
@@ -271,10 +330,10 @@ public class UserRepositoryImpl implements UserRepository {
 			e.printStackTrace();
 			//return "fail12";
 		}
-		finally {
-			//closure work
-			dbUtils.closeConnection(connection);
-		}
+//		finally {
+//			//closure work
+//			dbUtils.closeConnection(connection);
+//		}
 		return Optional.empty();
 	}
 	
@@ -286,7 +345,11 @@ public class UserRepositoryImpl implements UserRepository {
 		
 		String deleteStatement = "delete from register where regId=?";
 		
-		connection = dbUtils.getConnection();
+		try {
+			connection = dataSource.getConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 		
 		try {
 			preparedStatement = connection.prepareStatement(deleteStatement);
@@ -297,7 +360,7 @@ public class UserRepositoryImpl implements UserRepository {
 				//delete his credentials
 //				Register register3 = new Register();
 				//login2.setUserName(register3.getEmail());
-				String result4  = loginrepository.deleteCredentials(id);
+				String result4  = loginRepository.deleteCredentials(id);
 				if(result4 == "success") {
 					return "record deleted";
 			}
@@ -317,10 +380,10 @@ public class UserRepositoryImpl implements UserRepository {
 			//return "fail12";
 			return"fail";
 		}
-		finally {
-			//closure work
-			dbUtils.closeConnection(connection);
-		}
+//		finally {
+//			//closure work
+//			dbUtils.closeConnection(connection);
+//		}
 //		return "fail";
 	}
 }

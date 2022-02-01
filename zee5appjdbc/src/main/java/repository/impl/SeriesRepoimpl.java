@@ -17,20 +17,21 @@ import exception.InvalidIdLengthException;
 import exception.NameNotFoundException;
 import repository.SeriesRepo2;
 import utils.DBUtils;
-
+import org.springframework.stereotype.Repository;
+@Repository
 public class SeriesRepoimpl implements SeriesRepo2 {
 private TreeSet<Series> set = new TreeSet<>();
 DBUtils dbUtils = null;
 
-	private static SeriesRepo2 seriesrepository;
-	public static SeriesRepo2 getInstance() throws IOException {
-		if(seriesrepository==null)
-			seriesrepository = new SeriesRepoimpl();
-		return seriesrepository;
-	}
+//	private static SeriesRepo2 seriesrepository;
+//	public static SeriesRepo2 getInstance() throws IOException {
+//		if(seriesrepository==null)
+//			seriesrepository = new SeriesRepoimpl();
+//		return seriesrepository;
+//	}
 	
 	private SeriesRepoimpl() throws IOException {
-		dbUtils = DBUtils.getInstance();
+//		dbUtils = DBUtils.getInstance();
 	}
 
 	@Override

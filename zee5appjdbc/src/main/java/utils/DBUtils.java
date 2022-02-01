@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DBUtils {
 
 	
@@ -19,18 +21,18 @@ public class DBUtils {
 		// TODO Auto-generated constructor stub
 		properties = loadProperties();
 	}
-//	Properties properties;
+	Properties properties;
 	private static DBUtils dbutils;
-	public static DBUtils getInstance() throws IOException {
-		if(dbutils ==null)
-			//but we refer using interface only i.e.
-			//repository = new UserRepository()
-			// we can only access interface methods
-			
-			// this will use functionalities of the interface and both class only
-			dbutils = new DBUtils();
-		return dbutils;
-	}
+//	public static DBUtils getInstance() throws IOException {
+//		if(dbutils ==null)
+//			//but we refer using interface only i.e.
+//			//repository = new UserRepository()
+//			// we can only access interface methods
+//			
+//			// this will use functionalities of the interface and both class only
+//			dbutils = new DBUtils();
+//		return dbutils;
+//	}
 	
 	public Connection	getConnection() {
 		// the connection with Database
@@ -45,9 +47,9 @@ public class DBUtils {
 					properties.getProperty("jdbc.password"));
 			
 
-			connection.setAutoCommit(false);}
+//			connection.setAutoCommit(false);}
 //			System.out.println(properties);
-			
+			}	
 		} catch (IOException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,7 +66,7 @@ public class DBUtils {
 			e.printStackTrace();
 		}
 	}
-	Properties properties ;
+//	Properties properties ;
 	private Properties loadProperties() throws IOException {
 		// read the properties file
 		

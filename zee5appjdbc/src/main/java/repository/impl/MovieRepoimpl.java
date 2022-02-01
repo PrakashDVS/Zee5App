@@ -20,20 +20,22 @@ import exception.LocationNotFoundException;
 import exception.NameNotFoundException;
 import repository.MovieRepo2;
 import utils.DBUtils;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class MovieRepoimpl implements MovieRepo2 {
 private Set<Movie> set = new LinkedHashSet<>();
 	DBUtils dbUtils = null;
 	private MovieRepoimpl() throws IOException {
-		dbUtils = DBUtils.getInstance();
+//		dbUtils = DBUtils.getInstance();
 	}
 	
-	private static MovieRepo2 movieRepository;
-	public static MovieRepo2 getInstance() throws IOException{
-		if(movieRepository==null)
-			movieRepository = new MovieRepoimpl();
-		return movieRepository;
-	}
+//	private static MovieRepo2 movieRepository;
+//	public static MovieRepo2 getInstance() throws IOException{
+//		if(movieRepository==null)
+//			movieRepository = new MovieRepoimpl();
+//		return movieRepository;
+//	}
 	
 	@Override
 	public String addMovie(Movie movie) {

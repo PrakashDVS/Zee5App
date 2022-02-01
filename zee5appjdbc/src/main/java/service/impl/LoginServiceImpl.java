@@ -7,22 +7,24 @@ import dto.ROLE;
 import repository.LoginRepository;
 import repository.impl.LoginRepositoryImpl;
 import service.LoginService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LoginServiceImpl implements LoginService {
 	
-	private static LoginService loginService;
+//	private static LoginService loginService;
 	private static LoginRepository loginRepository = null;
 
-	private LoginServiceImpl() throws IOException {
-		loginRepository = LoginRepositoryImpl.getInstance();
-	}
+//	private LoginServiceImpl() throws IOException {
+//		loginRepository = LoginRepositoryImpl.getInstance();
+//	}
 
-	public static LoginService getInstance() throws IOException {
-		if (loginService == null) {
-			loginService = new LoginServiceImpl();
-		}
-		return loginService;
-	}
+//	public static LoginService getInstance() throws IOException {
+//		if (loginService == null) {
+//			loginService = new LoginServiceImpl();
+//		}
+//		return loginService;
+//	}
 
 	@Override
 	public String addCredentials(Login login) {

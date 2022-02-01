@@ -342,12 +342,12 @@ public class Main {
 //
 //	}
 
-		try {
-			LoginService loginService = LoginServiceImpl.getInstance();
-			System.out.println(loginService.changeRole("dvsp@gmail.com", ROLE.ROLE_ADMIN));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			LoginService loginService = LoginServiceImpl.getInstance();
+//			System.out.println(loginService.changeRole("dvsp@gmail.com", ROLE.ROLE_ADMIN));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

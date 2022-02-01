@@ -1,6 +1,7 @@
 package repository.impl;
 
 import java.io.IOException;
+import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,22 +17,23 @@ import exception.InvalidAmountException;
 import exception.InvalidIdLengthException;
 import repository.Subrepo2;
 import utils.DBUtils;
+@Repository
 
 public class Subrepoimpl implements Subrepo2 {
 private List<Subscription> set = new ArrayList<>();
 	DBUtils dbUtils = null;
     private Subrepoimpl() throws IOException {
-    	dbUtils = DBUtils.getInstance();
+//    	dbUtils = DBUtils.getInstance();
 	}
 	
-	private static Subrepo2 subscriptionRepository;
-	public static Subrepo2 getInstance() throws IOException {
-		if(subscriptionRepository==null)
-			subscriptionRepository = new Subrepoimpl();
-		
-		return subscriptionRepository;
-	
-	}
+//	private static Subrepo2 subscriptionRepository;
+//	public static Subrepo2 getInstance() throws IOException {
+//		if(subscriptionRepository==null)
+//			subscriptionRepository = new Subrepoimpl();
+//		
+//		return subscriptionRepository;
+//	
+//	}
 	@Override
 	public String addSubscription(Subscription subscription) throws InvalidAmountException {
 		// TODO Auto-generated method stub

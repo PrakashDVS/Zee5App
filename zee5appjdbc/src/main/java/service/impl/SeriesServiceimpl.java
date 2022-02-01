@@ -1,6 +1,7 @@
 package service.impl;
 
 import java.io.IOException;
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,20 +13,20 @@ import exception.NameNotFoundException;
 import repository.SeriesRepo2;
 import repository.impl.SeriesRepoimpl;
 import service.SeriesService2;
-
+@Service
 public class SeriesServiceimpl implements SeriesService2 {
 	private SeriesRepo2 repository;
-	private static SeriesService2 service;	
-	
-	public static SeriesService2 getInstance() throws IOException {
-		if(service == null)
-			service = new SeriesServiceimpl();
-		return service;
-	}
-	
-    private SeriesServiceimpl() throws IOException {
-		repository = SeriesRepoimpl.getInstance();
-	}
+//	private static SeriesService2 service;	
+//	
+//	public static SeriesService2 getInstance() throws IOException {
+//		if(service == null)
+//			service = new SeriesServiceimpl();
+//		return service;
+//	}
+//	
+//    private SeriesServiceimpl() throws IOException {
+//		repository = SeriesRepoimpl.getInstance();
+//	}
 
 	@Override
 	public String addSeries(Series series) {

@@ -1,6 +1,7 @@
 package service.impl;
 
 import java.io.IOException;
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,19 +16,20 @@ import repository.MovieRepo2;
 import repository.impl.MovieRepoimpl;
 import service.MovieService2;
 
+@Service
 public class MovieServiceimpl implements MovieService2 {
-	private static MovieService2 movieService;
+//	private static MovieService2 movieService;
 	private static MovieRepo2 movieRepository;
 
-	private MovieServiceimpl() throws IOException {
-		movieRepository = MovieRepoimpl.getInstance();
-	}
-
-	public static MovieService2 getInstance() throws IOException {
-		if (movieService == null)
-			movieService = new MovieServiceimpl();
-		return movieService;
-	}
+//	private MovieServiceimpl() throws IOException {
+//		movieRepository = MovieRepoimpl.getInstance();
+//	}
+//
+//	public static MovieService2 getInstance() throws IOException {
+//		if (movieService == null)
+//			movieService = new MovieServiceimpl();
+//		return movieService;
+//	}
 	@Override
 	public String addMovie(Movie movie) {
 		// TODO Auto-generated method stub
