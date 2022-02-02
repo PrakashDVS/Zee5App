@@ -11,8 +11,8 @@ import com.zee.zee5app.exception.NameNotFoundException;
 
 public interface SeriesService2 {
 	public String addSeries(Series series); 
-	public String deleteSeries(String id) throws IdNotFoundException;
+	public String deleteSeries(String id) throws IdNotFoundException, NameNotFoundException;
 	public String modifySeries(String id, Series series) throws IdNotFoundException, InvalidIdLengthException, NameNotFoundException;
 	public Optional<Series> getSeriesById(String id) throws IdNotFoundException, InvalidIdLengthException, NameNotFoundException;
-	public Optional<ArrayList<Series>> getAllSeries() throws InvalidIdLengthException, NameNotFoundException;
+	public Optional<List<Series>> getAllSeries() throws InvalidIdLengthException, NameNotFoundException;
 }

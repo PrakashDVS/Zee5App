@@ -4,6 +4,13 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
@@ -23,35 +30,48 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-//AllArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name="register")
 public class Register implements Comparable<Register>
 {
 	
 	
+
+    @Id
+    @Column(name="regId")
 	@Setter(value = AccessLevel.NONE)
 	private String id;
 	// it should have min length of 6.
 	// we have to write a code to validate the length and 
 	// then assign the value.
-	@Setter(value = AccessLevel.NONE)
+//	@Setter(value = AccessLevel.NONE)
+    @Size(max=50)
+    @NotBlank
 	private String firstName;
-	@Setter(value = AccessLevel.NONE)
+//	@Setter(value = AccessLevel.NONE)
+    @Size(max=50)
 	private String lastName;
-	@Setter(value = AccessLevel.NONE)
+//	@Setter(value = AccessLevel.NONE)
+    @Size(max=50)
+    @NotBlank
 	private String email;
-	@Setter(value = AccessLevel.NONE)
+//	@Setter(value = AccessLevel.NONE)
+    @Size(max=100)
+    @NotBlank
 	private String password;
+    @NotBlank
 	private BigDecimal contactNumber;
-	public Register(String id, String firstName, String lastName, String email, String password , BigDecimal contactNumber)
-			throws InvalidIdLengthException, InvalidNameException, InvalidEmailException , InvalidPasswordException {
-		super();
-		this.setId(id);
-		this.setFirstName(firstName);
-		this.setLastName(lastName);
-		this.email = email;
-		this.password = password;
-		this.contactNumber = contactNumber;
-	}
+//	public Register(String id, String firstName, String lastName, String email, String password , BigDecimal contactNumber)
+//			throws InvalidIdLengthException, InvalidNameException, InvalidEmailException , InvalidPasswordException {
+//		super();
+//		this.setId(id);
+//		this.setFirstName(firstName);
+//		this.setLastName(lastName);
+//		this.email = email;
+//		this.password = password;
+//		this.contactNumber = contactNumber;
+//	}
 //	
 //	public Register() {
 //		// EDC

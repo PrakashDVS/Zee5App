@@ -18,5 +18,5 @@ public interface MovieService2 {
 	public Optional<Movie> getMovieById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException;
 	public Optional<Movie> getMovieByName(String name)
 			throws NameNotFoundException, LocationNotFoundException, InvalidNameException, InvalidIdLengthException;
-	public Optional<ArrayList<Movie>> getAllMovie() throws InvalidIdLengthException, InvalidNameException;
+	public Optional<List<Movie>> getAllMovie() throws InvalidIdLengthException, InvalidNameException;
 }

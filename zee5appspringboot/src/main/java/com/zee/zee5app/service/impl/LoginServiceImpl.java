@@ -1,20 +1,26 @@
 package com.zee.zee5app.service.impl;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.zee.zee5app.dto.Login;
 import com.zee.zee5app.dto.ROLE;
+import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.exception.IdNotFoundException;
+import com.zee.zee5app.exception.InvalidEmailException;
+import com.zee.zee5app.exception.InvalidIdLengthException;
+import com.zee.zee5app.exception.InvalidNameException;
+import com.zee.zee5app.exception.InvalidPasswordException;
 import com.zee.zee5app.repository.LoginRepository;
-import com.zee.zee5app.repository.impl.LoginRepositoryImpl;
 import com.zee.zee5app.service.LoginService;
 
 @Service
 public class LoginServiceImpl implements LoginService {
 	
 //	private static LoginService loginService;
-	private static LoginRepository loginRepository = null;
+	private  LoginRepository loginRepository;
 
 //	private LoginServiceImpl() throws IOException {
 //		loginRepository = LoginRepositoryImpl.getInstance();
@@ -30,25 +36,44 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public String addCredentials(Login login) {
 		// TODO Auto-generated method stub
-		return loginRepository.addCredentials(login);
+		Login login2 = loginRepository.save(login);
+		// TODO Auto-generated method stub
+		if(login2 != null) {
+			return "success";
+		}
+		else {
+			return "fail";
+		}
 	}
 
 	@Override
-	public String deleteCredentials(String userName) {
+	public String deleteCredentials(String userName) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		return loginRepository.deleteCredentials(userName);
+		try {
+			Optional<Login> optional = loginRepository.findById(userName);
+			if(optional.isEmpty()) {
+				throw new IdNotFoundException("record not found");
+			}
+			else {
+				loginRepository.deleteById(userName);
+				return "success";
+			}
+		}catch(IdNotFoundException e) {
+			e.printStackTrace();
+			throw new IdNotFoundException(e.getLocalizedMessage());
+		}
 	}
 
 	@Override
 	public String changePassword(String userName, String password) {
 		// TODO Auto-generated method stub
-		return loginRepository.changePassword(userName, password);
+		return null;
 	}
 
 	@Override
 	public String changeRole(String userName, ROLE role) {
 		// TODO Auto-generated method stub
-		return loginRepository.changeRole(userName, role);
+		return null;
 	}
 
 }

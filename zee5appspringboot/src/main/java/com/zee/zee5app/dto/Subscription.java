@@ -1,5 +1,13 @@
 package com.zee.zee5app.dto;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.zee.zee5app.exception.InvalidAmountException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 
@@ -10,11 +18,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-//@Data
+@Data
 @Setter
 @Getter
 @EqualsAndHashCode
 @ToString
+@Entity
+@Table(name="subscription")
 public class Subscription implements Comparable<Subscription>{
 	
 	public Subscription(){
@@ -37,19 +47,28 @@ public class Subscription implements Comparable<Subscription>{
 		this.autoRenewal = autoRenewal;
 		this.expiryDate = expiryDate;
 	}
-
+	@Id
+    @Column(name="id")
 	@Setter(value = AccessLevel.NONE)
 	private String id;
 	private String type;
+	@NotNull
     private String dateOfPurchase;
+	@NotBlank
+	@Size(max = 10)
     private String paymentMode;
-    
     @Setter(value = AccessLevel.NONE)
+    @NotNull
     private int amount;
-    
+    @NotBlank
+    @Size(max=5)
     private String status;
+    @NotBlank
+    @Size(max=5)
     private String autoRenewal;
+    @NotNull
     private String expiryDate;
+    @NotBlank
     private String RegId;
 
 
