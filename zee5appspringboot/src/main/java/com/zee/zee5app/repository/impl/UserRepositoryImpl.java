@@ -29,8 +29,8 @@ import com.zee.zee5app.utils.PasswordUtils;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-@Repository // it will create singleton object
 
+@Repository // it will create singleton object
 public class UserRepositoryImpl implements UserRepository {
 	//private Register[] registers = new Register[10];
 	
@@ -69,7 +69,8 @@ public class UserRepositoryImpl implements UserRepository {
 	@Autowired
 	LoginRepository loginRepository ;
 	//private static int count = -1;
-	
+	@Autowired
+	private PasswordUtils passwordUtils;
 	
 	//now we make an singleton object for this
 	public UserRepositoryImpl() throws IOException{
@@ -100,11 +101,8 @@ public class UserRepositoryImpl implements UserRepository {
 		// TODO Auto-generated method stub
 		//the user details should be stored in database
 		Connection connection = null;
-		try {
-			connection = dataSource.getConnection();
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-		}
+		
+		
 		PreparedStatement preparedStatement = null;
 		String insertStatement = "insert into register"+
 		       "(regID, firstname, lastname, email, contactnumber, password)"
@@ -112,7 +110,12 @@ public class UserRepositoryImpl implements UserRepository {
 		//we will use concatenate the values in values spec
 		//we will use it or not?
 		//here we will provide the values against ?(placeholder)
-		
+		try {
+			connection = dataSource.getConnection();
+//			connection.setAutoCommit(false);
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		//connection object
 //		connection = dbUtils.getConnection();
 		
@@ -130,7 +133,7 @@ public class UserRepositoryImpl implements UserRepository {
 			String salt = PasswordUtils.getSalt(30);
 			String encryptedPassword = PasswordUtils.generateSecurePassword(register.getPassword(), salt);
 			preparedStatement.setString(6, encryptedPassword);
-			
+//			connection.setAutoCommit(false);
 			///username: emailid
 			//regid  :regid
 			//password: password
@@ -143,7 +146,7 @@ public class UserRepositoryImpl implements UserRepository {
 			// delete 3 : 3 rows deleted
 			
 			if(result>0) {
-				connection.commit();
+//				connection.commit();
 				Login login = new Login(register.getEmail(), encryptedPassword, register.getId(), ROLE.values()[new Random().nextInt(2)]);
 				
 				
@@ -165,12 +168,12 @@ public class UserRepositoryImpl implements UserRepository {
 				} catch (SQLException e) {
 			// TODO Auto-generated catch block
 //			e.printStackTrace();
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+//			try {
+////				connection.rollback();
+//			} catch (SQLException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
 			return "failure";
 		}
 //		finally {
@@ -202,7 +205,7 @@ public class UserRepositoryImpl implements UserRepository {
 			int result = preparedStatement.executeUpdate();
 
 			if (result > 0) {
-				connection.commit();
+//				connection.commit();
 				return "success";
 			} else {
 				connection.rollback();

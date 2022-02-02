@@ -29,9 +29,9 @@ System.out.println(dataSource!=null);
 	UserRepository userRepository = applicationContext.getBean(UserRepository.class);
 
 	try {
-		Register register = new Register("Donepuudi123", "dvsp", "venkata", "dvsp12354@gmail.com", "343323",new BigDecimal("9235567814"));
+		Register register = new Register("ab00008", "dvsprakash", "venkatasai", "dvspra@gmail.com", "34553323",new BigDecimal("9235567814"));
 		System.out.println(userRepository.addUser(register));
-	} catch (InvalidIdLengthException e) {
+	} catch (InvalidIdLengthException | InvalidNameException | InvalidEmailException | InvalidPasswordException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
