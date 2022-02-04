@@ -24,12 +24,16 @@ public class Login implements Comparable<Login> {
 	private String password;
 	@NotBlank
 	private String regId;
-	@NotNull
-	private ROLE role;
+//	@NotNull
+//	private Role role;
+	
 	
 	@Override
 	public int compareTo(Login o) {
 		// TODO Auto-generated method stub
 		return o.userName.compareTo(this.getUserName());
 	}
+
+
+	
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.zee.zee5app.dto.Movie;
-import com.zee.zee5app.dto.ROLE;
+import com.zee.zee5app.dto.Role;
 import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.dto.Series;
 import com.zee.zee5app.dto.Subscription;

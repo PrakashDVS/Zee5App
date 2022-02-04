@@ -3,6 +3,8 @@ package com.zee.zee5app.dto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,12 +12,14 @@ import javax.validation.constraints.NotNull;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Setter;
 
 @Data
 @Entity
 @Table(name="episodes")
+@AllArgsConstructor
 public class Episodes {
 	@Id
     @Column(name="epiId")
@@ -47,4 +51,10 @@ public class Episodes {
 		}
 		this.seriesId = id;
 	}
+	@ManyToOne
+	@JoinColumn(name="id")
+	
+	private Series series;
+	
+	
 }

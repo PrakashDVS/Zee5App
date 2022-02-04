@@ -68,7 +68,7 @@ public class Subserviceimpl implements Subservice2 {
 	}
 
 	@Override
-	public Optional<Subscription> getSubscriptionById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidAmountException {
+	public  Optional<Subscription> getSubscriptionById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidAmountException {
 		// TODO Auto-generated method stub
 		return repository.findById(id);
 	}

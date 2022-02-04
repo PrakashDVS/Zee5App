@@ -9,11 +9,15 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
@@ -96,5 +100,7 @@ public class Series implements Comparable<Series> {
 			throw new InvalidIdLengthException("id length less than 6");
 		this.id = id;
 	}
+	@OneToMany(mappedBy = "series",cascade=CascadeType.ALL)
+	private List<Episodes> episodes =new ArrayList<>();
 	
 }

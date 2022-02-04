@@ -72,7 +72,7 @@ public class MovieServiceimpl implements MovieService2 {
 	}
 
 	@Override
-	public Optional<Movie> getMovieById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException {
+	public  Optional<Movie> getMovieById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException {
 		// TODO Auto-generated method stub
 		return movieRepository.findById(id);
 	}
