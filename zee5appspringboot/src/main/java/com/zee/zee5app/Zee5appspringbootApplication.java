@@ -54,7 +54,7 @@ public class Zee5appspringbootApplication {
 //		 System.out.println(roleservice.addRole(role2));
 		 
 		 UserServiceImpl service=applicationContext.getBean(UserServiceImpl.class);
-		 Register register = new Register("shannu33","shanmukh","narra","shannu33@gmail.com","S123456",null, null);
+		 Register register = new Register("shannu33","shanmukh","narra","shannu33@gmail.com","S123456",null, null, null);
 		register.setContactNumber(new BigDecimal(981123));
 
 		 Set<Role> roles=new HashSet<>();

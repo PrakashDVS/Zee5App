@@ -14,44 +14,47 @@ import com.zee.zee5app.exception.InvalidAmountException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Data
+//@Data
 @Setter
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="subscription")
 public class Subscription implements Comparable<Subscription>{
 	
-	public Subscription(){
-		
-	}
-
-	public Subscription(String id, String type, String status, String dateOfPurchase,int amount,
-			String regId, String paymentMode, String autoRenewal, String expiryDate) 
-			throws InvalidIdLengthException, InvalidAmountException 
-	{
-		
-		super();
-		this.setId(id);
-		this.type = type;
-		this.status = status;
-		this.dateOfPurchase = dateOfPurchase;
-		this.setAmount(amount);
-		this.RegId = regId;
-		this.paymentMode = paymentMode;
-		this.autoRenewal = autoRenewal;
-		this.expiryDate = expiryDate;
-	}
+//	public Subscription(){
+//		
+//	}
+//
+//	public Subscription(String id, String type, String status, String dateOfPurchase,int amount,
+//			String regId, String paymentMode, String autoRenewal, String expiryDate) 
+//			throws InvalidIdLengthException, InvalidAmountException 
+//	{
+//		
+//		super();
+//		this.setId(id);
+//		this.type = type;
+//		this.status = status;
+//		this.dateOfPurchase = dateOfPurchase;
+//		this.setAmount(amount);
+//		this.RegId = regId;
+//		this.paymentMode = paymentMode;
+//		this.autoRenewal = autoRenewal;
+//		this.expiryDate = expiryDate;
+//	}
 	@Id
     @Column(name="id")
-	@Setter(value = AccessLevel.NONE)
 	private String id;
 	private String type;
 	@NotNull
@@ -70,16 +73,12 @@ public class Subscription implements Comparable<Subscription>{
     private String autoRenewal;
     @NotNull
     private String expiryDate;
-    @NotBlank
-    private String RegId;
+//    @NotBlank
+//    private String RegId;
 
 
 
-	@Override
-	public int compareTo(Subscription o) {
-		// TODO Auto-generated method stub
-		return this.id.compareTo(o.getId());
-	}
+	
 
 	public void setId(String id) throws InvalidIdLengthException {
 		if(id.length()<6)
@@ -94,9 +93,14 @@ public class Subscription implements Comparable<Subscription>{
 		this.amount = amount;
 	}
 
-	
 	@OneToOne
 	@JoinColumn(name = "regId")
 	private Register register;
+	@Override
+	public int compareTo(Subscription o) {
+		// TODO Auto-generated method stub
+		return this.id.compareTo(o.getId());
+	}
+
 
 }

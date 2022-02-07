@@ -35,8 +35,8 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@ToString
 @EqualsAndHashCode
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -48,7 +48,6 @@ public class Register implements Comparable<Register>
 
     @Id
     @Column(name="regId")
-	@Setter(value = AccessLevel.NONE)
 	private String id;
 	// it should have min length of 6.
 	// we have to write a code to validate the length and 
@@ -151,11 +150,7 @@ public class Register implements Comparable<Register>
 		this.password = password;
 	}
 
-	@Override
-	public int compareTo(Register o) {
-		// TODO Auto-generated method stub
-		return o.id.compareTo(this.id);
-	}
+	
 	
 	// private stuff will be accessible only inside the class.
 	
@@ -164,13 +159,19 @@ public class Register implements Comparable<Register>
 
 	
 	@ManyToMany
-	@JoinTable(name = "user_roles",joinColumns = @JoinColumn(name = "regId"),inverseJoinColumns = @JoinColumn(name = "roleId"))
-	private Set<Role> roles = new HashSet<>();
-	
+	@JoinTable(name = "user_roles",joinColumns = @JoinColumn(name = "regId"),
+	inverseJoinColumns = @JoinColumn(name = "roleId"))
+	private Set<Role> roles = new HashSet<Role>();
 	@OneToOne(mappedBy = "register", cascade = CascadeType.ALL)
 	private Subscription subscription;
+//	@OneToOne(mappedBy = "register", cascade = CascadeType.ALL)
+//	private Subscription subscription;
     
-	@OneToOne(mappedBy = "register", cascade = CascadeType.ALL)
-	private Login login;
-
+//	@OneToOne(mappedBy = "register", cascade = CascadeType.ALL)
+//	private Login login;
+	@Override
+	public int compareTo(Register o) {
+		// TODO Auto-generated method stub
+		return o.id.compareTo(this.id);
+	}
 }

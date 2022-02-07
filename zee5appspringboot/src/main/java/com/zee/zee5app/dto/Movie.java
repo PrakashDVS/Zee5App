@@ -1,10 +1,13 @@
 package com.zee.zee5app.dto;
 
+import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
@@ -46,21 +49,21 @@ public class Movie implements Comparable<Movie>{
 	@NotNull
 	@Max(value = 70)
 	private int ageLimit;
-	@NotBlank
+	@NotNull
 	private String genre;
-	@NotBlank
+	@NotNull
 	private String language;
-	@NotBlank
-	private String trailer;
+@NotNull
+private String trailer;
 	@NotBlank
 	private String cast;
 	@NotNull
-	private int length;
-	@NotBlank
-	private String releaseDate;
+	private BigDecimal length;
+	@NotNull
+	private Date releaseDate;
 
-	public Movie(String id, String movieName, String genre, String language, String releaseDate, int length,
-			String trailer, String cast, int ageLimit) throws InvalidNameException, InvalidIdLengthException {
+	public Movie(String id, String movieName, String genre, String language, @NotBlank Date releaseDate, @NotNull BigDecimal length,
+			@NotNull String trailer, String cast, int ageLimit) throws InvalidNameException, InvalidIdLengthException {
 
 		super();
 		this.setId(id);

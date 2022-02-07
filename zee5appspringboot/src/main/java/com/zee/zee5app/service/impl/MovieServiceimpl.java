@@ -16,6 +16,7 @@ import com.zee.zee5app.exception.NameNotFoundException;
 import com.zee.zee5app.repository.MovieRepository;
 //import com.zee.zee5app.repository.impl.MovieRepoimpl;
 import com.zee.zee5app.service.MovieService2;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,8 @@ import java.util.Optional;
 @Service
 public class MovieServiceimpl implements MovieService2 {
 //	private static MovieService2 movieService;
-	private static MovieRepository movieRepository;
+	@Autowired
+	private MovieRepository movieRepository;
 
 //	private MovieServiceimpl() throws IOException {
 //		movieRepository = MovieRepoimpl.getInstance();
