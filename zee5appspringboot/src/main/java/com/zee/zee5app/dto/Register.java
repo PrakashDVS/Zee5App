@@ -19,6 +19,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
@@ -48,27 +50,28 @@ public class Register implements Comparable<Register>
 
     @Id
     @Column(name="regId")
+    @Length(min = 6)
 	private String id;
 	// it should have min length of 6.
 	// we have to write a code to validate the length and 
 	// then assign the value.
 //	@Setter(value = AccessLevel.NONE)
     @Size(max=50)
-    @NotBlank
+//    @NotNull
 	private String firstName;
 //	@Setter(value = AccessLevel.NONE)
     @Size(max=50)
 	private String lastName;
 //	@Setter(value = AccessLevel.NONE)
     @Size(max=50)
-    @NotBlank
+//    @NotNull
 	private String email;
 //	@Setter(value = AccessLevel.NONE)
     @Size(max=100)
-    @NotBlank
+//    @NotNull
 	private String password;
     @NotNull
-	private BigDecimal contactNumber;
+	private BigInteger contactNumber;
 //	public Register(String id, String firstName, String lastName, String email, String password , BigDecimal contactNumber)
 //			throws InvalidIdLengthException, InvalidNameException, InvalidEmailException , InvalidPasswordException {
 //		super();
@@ -164,6 +167,8 @@ public class Register implements Comparable<Register>
 	private Set<Role> roles = new HashSet<Role>();
 	@OneToOne(mappedBy = "register", cascade = CascadeType.ALL)
 	private Subscription subscription;
+	@OneToOne(mappedBy = "register", cascade = CascadeType.ALL)
+	private Login login;
 //	@OneToOne(mappedBy = "register", cascade = CascadeType.ALL)
 //	private Subscription subscription;
     

@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.zee.zee5app.exception.InvalidAmountException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 
@@ -95,6 +97,7 @@ public class Subscription implements Comparable<Subscription>{
 
 	@OneToOne
 	@JoinColumn(name = "regId")
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private Register register;
 	@Override
 	public int compareTo(Subscription o) {

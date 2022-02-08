@@ -12,7 +12,7 @@ import com.zee.zee5app.exception.LocationNotFoundException;
 import com.zee.zee5app.exception.NameNotFoundException;
 
 public interface MovieService2 {
-	public String addMovie(Movie movie);
+	public Movie addMovie(Movie movie);
 	public String deleteMovie(String id) throws IdNotFoundException;
 	public String modifyMovie(String id, Movie movie) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException;
 	public Optional<Movie> getMovieById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException;
