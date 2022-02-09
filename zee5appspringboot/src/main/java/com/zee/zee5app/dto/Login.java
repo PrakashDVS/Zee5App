@@ -31,8 +31,8 @@ public class Login implements Comparable<Login> {
 	private String userName;
 	@NotBlank
 	private String password;
-	@NotBlank
-	private String regId;
+//	@NotBlank
+//	private String regId;
 //	@NotNull
 //	private Role role;
 	@OneToOne(fetch = FetchType.LAZY)

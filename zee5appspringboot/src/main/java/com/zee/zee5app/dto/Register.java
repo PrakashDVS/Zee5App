@@ -41,6 +41,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
 @Entity
 @Table(name="register")
 public class Register implements Comparable<Register>
@@ -58,9 +59,11 @@ public class Register implements Comparable<Register>
 //	@Setter(value = AccessLevel.NONE)
     @Size(max=50)
 //    @NotNull
+    @NotBlank
 	private String firstName;
 //	@Setter(value = AccessLevel.NONE)
     @Size(max=50)
+    @NotBlank
 	private String lastName;
 //	@Setter(value = AccessLevel.NONE)
     @Size(max=50)
@@ -178,5 +181,9 @@ public class Register implements Comparable<Register>
 	public int compareTo(Register o) {
 		// TODO Auto-generated method stub
 		return o.id.compareTo(this.id);
+	}
+	public void setContactNumber(BigDecimal bigDecimal) {
+		// TODO Auto-generated method stub
+		
 	}
 }

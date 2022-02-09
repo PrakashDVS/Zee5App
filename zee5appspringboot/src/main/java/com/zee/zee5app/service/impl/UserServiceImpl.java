@@ -120,7 +120,7 @@ Register register2=userRepository.save(register);
 			return Optional.ofNullable(userRepository.findAll());
 		}
 
-p
+
 
 		@Override
 		public String updateUser(String id, Register register) throws com.zee.zee5app.exception.IdNotFoundException {

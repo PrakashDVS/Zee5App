@@ -38,15 +38,15 @@ public class MovieServiceimpl implements MovieService2 {
 //		return movieService;
 //	}
 	@Override
-	public String addMovie(Movie movie) {
+	public Movie addMovie(Movie movie) {
 		// TODO Auto-generated method stub
 		Movie movie2 = movieRepository.save(movie);
 		// TODO Auto-generated method stub
 		if(movie2 != null) {
-			return "success";
+			return movie2;
 		}
 		else {
-			return "fail";
+			return null;
 		}
 	}
 

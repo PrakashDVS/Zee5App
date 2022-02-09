@@ -33,36 +33,37 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@PostMapping("/addUser")
-public ResponseEntity<?> addUser(@Valid@RequestBody Register register) {
-	try {
+public ResponseEntity<?> addUser(@Valid @RequestBody Register register) throws AlreadyExistsException {
+		
+		//1. It should store the received info in database
 		Register result = userService.addUser(register);
 		System.out.println(result);
 		return ResponseEntity.status(201).body(result);
-	} catch (AlreadyExistsException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	Map<String, String> hashMap = new HashMap<>();
-	hashMap.put("message", "record already exists");
-	return ResponseEntity.badRequest().body(hashMap);
-	}
-}
-	
-	
-@GetMapping("/{id}")
+		
+		}
+	//retrieve single record
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable("id") String id) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException, InvalidEmailException, InvalidPasswordException{
 		Register result = userService.getUserById(id);
-		return ResponseEntity.status(201).body(result);
+		return ResponseEntity.ok(result);	
+		
 	}
-//return null;
-@GetMapping("/all")
-public ResponseEntity<?> getAllUserDetails() throws InvalidEmailException, InvalidIdLengthException, InvalidNameException, InvalidPasswordException{
-	Optional<List<Register>> optional = userService.getAllUserDetails();
-	if(optional.isEmpty()) {
-	Map<String, String> map = new HashMap<>();
-//	map.put("message", "no record found");
-	return ResponseEntity.status(HttpStatus.NO_CONTENT).body(map);
+	
+	//retrieve all records
+	@GetMapping("/all")
+	public ResponseEntity<?> getAllUserDetails() throws InvalidEmailException, InvalidIdLengthException, InvalidNameException, InvalidPasswordException{
+		Optional<List<Register>> optional = userService.getAllUserDetails();
+		if(optional.isEmpty()) {
+			Map<String, String> map = new HashMap<>();
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(map);
+		}
+		return ResponseEntity.ok(optional.get());	
+		
 	}
-return ResponseEntity.ok(optional.get());
-}
+	
+	//2. validation
+			//3. return the crispy info to the client
+			//4. a. customization in error response
+			//4. b. declaration of custom exception
+
 }
