@@ -17,8 +17,10 @@ import com.zee.zee5app.repository.RoleRepository;
 import com.zee.zee5app.service.RoleService;
 @Service
 public class RoleServiceImpl implements RoleService {
-    @Autowired
-    RoleRepository roleRepository;
+	@Autowired
+	RoleRepository roleRepository ;
+	
+	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public String addRole(Role role) {
@@ -26,36 +28,15 @@ public class RoleServiceImpl implements RoleService {
 		Role role2 = roleRepository.save(role);
 		if(role2 != null) {
 			return "success";
-		}
-		else {
+		}else {
 			return "fail";
 		}
 	}
 
 	@Override
-	public String deleteRole(int roleId) throws IdNotFoundException, NameNotFoundException {
+	public void deleteRole(int roleId) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String modifyRole(int roleId, Role role)
-			throws IdNotFoundException, InvalidIdLengthException, NameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Optional<Role> getRoleById(int roleId)
-			throws IdNotFoundException, InvalidIdLengthException, NameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Optional<List<Role>> getAllRoles() throws InvalidIdLengthException, NameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 }

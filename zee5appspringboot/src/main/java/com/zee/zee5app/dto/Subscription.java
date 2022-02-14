@@ -2,6 +2,8 @@ package com.zee.zee5app.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -24,81 +26,44 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-//@Data
-@Setter
 @Getter
-@EqualsAndHashCode
+@Setter
 @ToString
+@EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name="subscription")
+//@AllArgsConstructor
+@Entity 
+@Table(name = "subscription")
+
 public class Subscription implements Comparable<Subscription>{
 	
-//	public Subscription(){
-//		
-//	}
-//
-//	public Subscription(String id, String type, String status, String dateOfPurchase,int amount,
-//			String regId, String paymentMode, String autoRenewal, String expiryDate) 
-//			throws InvalidIdLengthException, InvalidAmountException 
-//	{
-//		
-//		super();
-//		this.setId(id);
-//		this.type = type;
-//		this.status = status;
-//		this.dateOfPurchase = dateOfPurchase;
-//		this.setAmount(amount);
-//		this.RegId = regId;
-//		this.paymentMode = paymentMode;
-//		this.autoRenewal = autoRenewal;
-//		this.expiryDate = expiryDate;
-//	}
 	@Id
-    @Column(name="id")
-	private String id;
-	private String type;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "subId")
+	private Long id;
+	
 	@NotNull
-    private String dateOfPurchase;
+	private String dateOfPurchase;
+	@NotNull
+	private String expiryDate;
+	
+	@NotNull
+	private int amount;
+	
 	@NotBlank
-	@Size(max = 10)
-    private String paymentMode;
-    @Setter(value = AccessLevel.NONE)
-    @NotNull
-    private int amount;
-    @NotBlank
-    @Size(max=5)
-    private String status;
-    @NotBlank
-    @Size(max=5)
-    private String autoRenewal;
-    @NotNull
-    private String expiryDate;
-//    @NotBlank
-//    private String RegId;
-
-
+	private String paymentMode;
+	
+	@NotBlank
+	private String status;
+	
+	@NotBlank
+	private String type;
+	
+	@NotBlank
+	private String autoRenewal;
 
 	
 
-	public void setId(String id) throws InvalidIdLengthException {
-		if(id.length()<6)
-			throw new InvalidIdLengthException("Id length cannot be less than 6");
-		this.id = id;
-
-	}
-
-	public void setAmount(int amount) throws InvalidAmountException {
-		if(amount < 1000)
-			throw new InvalidAmountException("Amount cannot be less than 1000");
-		this.amount = amount;
-	}
-
-	@OneToOne
-	@JoinColumn(name = "regId")
-	@JsonProperty(access = Access.WRITE_ONLY)
-	private Register register;
 	@Override
 	public int compareTo(Subscription o) {
 		// TODO Auto-generated method stub
@@ -106,4 +71,23 @@ public class Subscription implements Comparable<Subscription>{
 	}
 
 
+
+	public Subscription(String dateOfPurchase, String expiryDate, int amount,
+			String paymentMode, String status, String type,
+			String autoRenewal) {
+		this.dateOfPurchase = dateOfPurchase;
+		this.expiryDate = expiryDate;
+		this.amount = amount;
+		this.paymentMode = paymentMode;
+		this.status = status;
+		this.type = type;
+		this.autoRenewal = autoRenewal;
+	}
+	
+	
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JsonProperty(access = Access.WRITE_ONLY)
+//	@JoinColumn(name = "regid")
+//	private User register;
+	
 }

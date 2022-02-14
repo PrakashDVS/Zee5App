@@ -9,7 +9,10 @@ import com.zee.zee5app.dto.Movie;
 import com.zee.zee5app.dto.Series;
 
 @Repository
-public interface SeriesRepository extends JpaRepository<Series, String> {
+public interface SeriesRepository extends JpaRepository<Series, Long> {
+	Boolean existsBySeriesName(String seriesName);
 	Optional<Series> findBySeriesNameAndLanguage(String seriesName  , String language);
+	Optional<Series> findBySeriesName(String seriesName);
+	
 
 }

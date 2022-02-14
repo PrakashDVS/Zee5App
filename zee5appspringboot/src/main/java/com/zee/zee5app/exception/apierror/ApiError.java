@@ -17,79 +17,84 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 @Data
-
 public class ApiError {
-	//this class should provide collective info regarding the error/errors
-	
+// class to provide collective info regarding error/errors
+
 	private HttpStatus httpStatus;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss" )
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private LocalDateTime timeStamp;
-	private String debugMessage;
+
 	private String message;
-	private List<ApiSubError> subErrors; //to hold validation related errors
-	
+
+	private List<ApiSubError> subErrors; // to hold validational related errors
+
+	private String debugMessage;
+
 	private ApiError() {
+		// @ the time of calling the method whatever the date time value are there
+		// it will provide it.
 		timeStamp = LocalDateTime.now();
-		
-	}
-	
-	public ApiError(HttpStatus status) {
-		this();
-		this.httpStatus = status;
 	}
 
-	public ApiError(HttpStatus status, String message, Throwable ex) {
+	public ApiError(HttpStatus httpStatus) {
 		this();
-		this.httpStatus = status;
+		this.httpStatus = httpStatus;
+	}
+
+	public ApiError(HttpStatus httpStatus, String message, Throwable ex) {
+		this();
+		this.httpStatus = httpStatus;
 		this.message = message;
 		this.debugMessage = ex.getLocalizedMessage();
 	}
-	
-	//every field validation in subErrorS
-	//create a method to add this into subErrorS
-	
+
+	// every field validation in suberror
+	// create and add it into subError
+
 	private void addSubError(ApiSubError apiSubError) {
-		if(subErrors == null) {
+		if (subErrors == null) {
 			subErrors = new ArrayList<>();
 		}
 		subErrors.add(apiSubError);
 	}
-	
+
 	private void addValidationError(String object, String field, Object rejectedValue, String message) {
 		addSubError(new ApiValidationError(object, field, rejectedValue, message));
 	}
-	
-	private void addValidationError(String object, String messsge) {
-		addSubError(new ApiValidationError(object, messsge));
+
+	private void addValidationError(String object, String message) {
+		addSubError(new ApiValidationError(object, message));
 	}
-	
+
 	private void addValidationError(FieldError fieldError) {
-		this.addValidationError(fieldError.getObjectName(), fieldError.getField(), fieldError.getRejectedValue(), fieldError.getDefaultMessage());;
+		this.addValidationError(fieldError.getObjectName(), fieldError.getField(), 
+								fieldError.getRejectedValue(),fieldError.getDefaultMessage());
 	}
-	
+
 	public void addValidationErrors(List<FieldError> fieldErrors) {
-		//fieldErrors.forEach(this::addValidationError);
-		fieldErrors.forEach(e->this.addValidationError(e));
+		// both below methods are same
+		// fieldErrors.forEach(this::addValidationError);
+		fieldErrors.forEach(e -> this.addValidationError(e));
 	}
-	
+
 	private void addValidationError(ObjectError objectError) {
 		this.addValidationError(objectError.getObjectName(), objectError.getDefaultMessage());
 	}
-	
-	public void addValidationError1(List<ObjectError> globalErrors) {
-		globalErrors.forEach(e->this.addValidationError(e));
+
+	public void addValidationError(List<ObjectError> globalErrors) {
+		globalErrors.forEach(e -> this.addValidationError(e));
 	}
-	
-	public void addValidationError(ConstraintViolation<?> constraintViolation) {
-		this.addValidationError(constraintViolation.getRootBeanClass().getName(), 
-				((PathImpl) constraintViolation.getPropertyPath()).getLeafNode().asString(), 
-				constraintViolation.getInvalidValue(), 
-				constraintViolation.getMessage());
+
+	public void addValidationError(ConstraintViolation<?> cv) {
+		this.addValidationError(cv.getRootBeanClass().getName(),
+								((PathImpl) cv.getPropertyPath()).getLeafNode().asString(), 
+								cv.getInvalidValue(), 
+								cv.getMessage());
 	}
-	
-	public void addValidationError2(Set<ConstraintViolation<?>> constraintViolations) {
-		constraintViolations.forEach(e->addValidationError(e));
+
+	public void addValidationErrors(Set<ConstraintViolation<?>> cv) {
+		cv.forEach(e -> this.addValidationError(e));
 	}
 	
 }

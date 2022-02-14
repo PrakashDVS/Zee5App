@@ -11,11 +11,15 @@ import com.zee.zee5app.exception.LocationNotFoundException;
 import com.zee.zee5app.exception.NameNotFoundException;
 
 public interface EpisodeService {
-	public String addEpisode(Episodes episode);
-	public String deleteEpisode(String epiId) throws IdNotFoundException;
-	public String modifyEpisode(String epiId, Episodes episode) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException;
-	public Optional<Episodes> getEpisodeById(String epiId) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException;
-	public Optional<Episodes> getEpisodeByName(String episodeName)
-			throws NameNotFoundException, LocationNotFoundException, InvalidNameException, InvalidIdLengthException;
-	public Optional<List<Episodes>> getAllEpisode() throws InvalidIdLengthException, InvalidNameException;
+	public String addEpisode(Episodes episode) throws IdNotFoundException;
+
+	public String updateEpisodeById(Long id, Episodes episode) throws IdNotFoundException;
+
+	public String deleteEpisodeById(Long id) throws IdNotFoundException, InvalidIdLengthException;
+
+	public Optional<Episodes> getEpisodeById(Long id) throws IdNotFoundException, InvalidIdLengthException;
+
+	public Optional<List<Episodes>> getAllEpisodeList() ;
+	
+	public Episodes[] getAllEpisode() throws InvalidIdLengthException;
 }

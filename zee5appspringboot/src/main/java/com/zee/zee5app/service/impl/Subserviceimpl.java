@@ -1,7 +1,8 @@
 package com.zee.zee5app.service.impl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.dto.User;
 import com.zee.zee5app.dto.Subscription;
 import com.zee.zee5app.exception.IdNotFoundException;
 import com.zee.zee5app.exception.InvalidAmountException;
@@ -18,84 +19,58 @@ import java.util.List;
 import java.util.Optional;
 @Service
 public class Subserviceimpl implements Subservice2 {
-	private SubscriptionRepository repository ;
-//	private static Subservice2 service;	
-//	
-//	public static Subservice2 getInstance() throws IOException {
-//		if(service == null)
-//			service = new Subserviceimpl();
-//		return service;
-//	}
-//	
-//    private Subserviceimpl() throws IOException {
-//		repository = Subrepoimpl.getInstance();
-//	}
+	
+	@Autowired
+	private  SubscriptionRepository subscriptionRepository;
 
 	@Override
-	public String addSubscription(Subscription subscription) throws InvalidAmountException {
+	public String addSubscription(Subscription subscription) {
 		// TODO Auto-generated method stub
-		Subscription subscription2 = repository.save(subscription);
-		// TODO Auto-generated method stub
-		if(subscription2 != null) {
+		Subscription sub = subscriptionRepository.save(subscription);
+		if(sub != null) {
 			return "success";
-		}
-		else {
+		}else {
 			return "fail";
 		}
 	}
 
 	@Override
-	public String deleteSubscription(String id) throws IdNotFoundException, InvalidAmountException {
+	public String deleteSubscription(Long id) throws IdNotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Subscription> optional;
 		try {
-			Optional<Subscription> optional = this.getSubscriptionById(id);
+			optional = this.getSubscriptionById(id);
 			if(optional.isEmpty()) {
-				throw new IdNotFoundException("record not found");
-			}
-			else {
-				repository.deleteById(id);
+				throw new IdNotFoundException("id not found!");
+			}else {
+				subscriptionRepository.deleteById(id);
 				return "success";
 			}
-		}catch(IdNotFoundException | InvalidIdLengthException e) {
+		} catch (IdNotFoundException | InvalidIdLengthException | InvalidAmountException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new IdNotFoundException(e.getLocalizedMessage());
+			throw new IdNotFoundException(e.getMessage());
 		}
+		
 	}
 
 	@Override
-	public String modifySubscription(String id, Subscription subscription) {
+	public Optional<Subscription> getSubscriptionById(Long id)
+			throws IdNotFoundException, InvalidIdLengthException, InvalidAmountException {
+		// TODO Auto-generated method stub
+		return subscriptionRepository.findById(id);
+	}
+
+	@Override
+	public Optional<List<Subscription>> getAllSubscription() {
+		// TODO Auto-generated method stub
+		return Optional.ofNullable(subscriptionRepository.findAll());
+	}
+
+	@Override
+	public String updateSubscription(Long id, Subscription subscription) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public  Optional<Subscription> getSubscriptionById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidAmountException {
-		// TODO Auto-generated method stub
-		return repository.findById(id);
-	}
-
-	@Override
-	public Optional<List<Subscription>> getAllSubscription() throws InvalidIdLengthException, InvalidAmountException {
-		// TODO Auto-generated method stub
-		return Optional.ofNullable(repository.findAll());
-
-	}
-	
-//	@Override
-//	public String addSubscription(Subscription subscription) {
-//		// TODO Auto-generated method stub
-//		return this.repository.addSubscription(subscription);
-//	}
-//
-//	@Override
-//	public Subscription getSubscriptionById(String id) {
-//		// TODO Auto-generated method stub
-//		return this.repository.getSubscriptionById(id);
-//	}
-//
-//	@Override
-//	public Subscription[] getAllSubscriptions() {
-//		// TODO Auto-generated method stub
-//		return repository.getAllSubscription();
-//	}
 
 }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import org.springframework.stereotype.Service;
 
 import com.zee.zee5app.dto.Movie;
-import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.dto.User;
 import com.zee.zee5app.exception.IdNotFoundException;
 import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
@@ -24,92 +24,64 @@ import java.util.Optional;
 
 @Service
 public class MovieServiceimpl implements MovieService2 {
-//	private static MovieService2 movieService;
 	@Autowired
-	private MovieRepository movieRepository;
+	private  MovieRepository movieRepository;
 
-//	private MovieServiceimpl() throws IOException {
-//		movieRepository = MovieRepoimpl.getInstance();
-//	}
-//
-//	public static MovieService2 getInstance() throws IOException {
-//		if (movieService == null)
-//			movieService = new MovieServiceimpl();
-//		return movieService;
-//	}
 	@Override
 	public Movie addMovie(Movie movie) {
 		// TODO Auto-generated method stub
-		Movie movie2 = movieRepository.save(movie);
-		// TODO Auto-generated method stub
-		if(movie2 != null) {
-			return movie2;
-		}
-		else {
+		Movie movies = movieRepository.save(movie);
+		if (movies != null) {
+			return movies;
+		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public String deleteMovie(String id) throws IdNotFoundException {
+	public String deleteMovie(Long id) throws IdNotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Movie> optional;
 		try {
-			Optional<Movie> optional = this.getMovieById(id);
-			if(optional.isEmpty()) {
-				throw new IdNotFoundException("record not found");
-			}
-			else {
+			optional = this.getMovieById(id);
+			if (optional.isEmpty()) {
+				throw new IdNotFoundException("id not found!");
+			} else {
 				movieRepository.deleteById(id);
 				return "success";
 			}
-		}catch(InvalidNameException | IdNotFoundException | InvalidIdLengthException e) {
+		} catch (InvalidNameException | IdNotFoundException | InvalidIdLengthException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new IdNotFoundException(e.getLocalizedMessage());
+			throw new IdNotFoundException(e.getMessage());
 		}
 	}
 
 	@Override
-	public String modifyMovie(String id, Movie movie) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public  Optional<Movie> getMovieById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException {
+	public Optional<Movie> getMovieById(Long id)
+			throws IdNotFoundException, InvalidNameException, InvalidIdLengthException {
 		// TODO Auto-generated method stub
 		return movieRepository.findById(id);
-	}
-
-	@Override
-	public Optional<List<Movie>> getAllMovie() throws InvalidIdLengthException, InvalidNameException {
-		// TODO Auto-generated method stub
-		return Optional.ofNullable(movieRepository.findAll());
 	}
 
 	@Override
 	public Optional<Movie> getMovieByName(String name)
 			throws NameNotFoundException, LocationNotFoundException, InvalidNameException, InvalidIdLengthException {
 		// TODO Auto-generated method stub
-		return movieRepository.findById(name);
+
+		return null;
 	}
-    
-    
-	
-//	@Override
-//	public String addMovie(Movie movie) {
-//		// TODO Auto-generated method stub
-//		return this.repository.addMovie(movie);
-//	}
-//
-//	@Override
-//	public Movie getMovieById(String id) {
-//		// TODO Auto-generated method stub
-//		return this.repository.getMovieById(id);
-//	}
-//
-//	@Override
-//	public Movie[] getAllMovies() {
-//		// TODO Auto-generated method stub
-//		return repository.getAllMovie();
-//	}
+
+	@Override
+	public Optional<List<Movie>> getAllMovie() {
+		// TODO Auto-generated method stub
+		return Optional.ofNullable(movieRepository.findAll());
+	}
+
+	@Override
+	public String updateMovie(Long id, Movie movie) throws IdNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

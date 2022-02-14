@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,32 +22,21 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-@Entity
-@Table(name="login")
-public class Login implements Comparable<Login> {
+@Entity // entity class is used for ORM
+@Table(name = "login")
+public class Login {
+	
 	@Id
-    @Column(name="userName")
-	@Email
+	@Column(name = "userName")
 	private String userName;
+	
+	@Size(max = 100)
 	@NotBlank
 	private String password;
-//	@NotBlank
-//	private String regId;
-//	@NotNull
-//	private Role role;
-	@OneToOne(fetch = FetchType.LAZY)
-	@JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler"})
-	@JoinColumn(name="regId")
-	@JsonProperty(access = Access.WRITE_ONLY)
-	private Register register;
 	
-	@Override
-	public int compareTo(Login o) {
-		// TODO Auto-generated method stub
-		return o.userName.compareTo(this.getUserName());
-	}
-
-
+	@OneToOne(fetch = FetchType.LAZY)
+	@JsonProperty(access = Access.WRITE_ONLY)
+    @JoinColumn(name = "regId")
+	private User register;
 	
 }

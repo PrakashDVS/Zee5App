@@ -18,7 +18,7 @@ import com.zee.zee5app.Zee5appspringbootApplication;
 import com.zee.zee5app.dto.ERole;
 import com.zee.zee5app.dto.Episodes;
 import com.zee.zee5app.dto.Movie;
-import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.dto.User;
 import com.zee.zee5app.dto.Role;
 import com.zee.zee5app.dto.Series;
 import com.zee.zee5app.exception.AlreadyExistsException;

@@ -28,79 +28,69 @@ import javax.validation.constraints.NotNull;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
 import com.zee.zee5app.exception.NameNotFoundException;
-@Data
-@Setter
 @Getter
-@EqualsAndHashCode
+@Setter
 @ToString
+@EqualsAndHashCode
 @NoArgsConstructor
+//@AllArgsConstructor
+@Entity // entity class is used for ORM
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = "seriesName") })
 
-@Entity
-@Table(name="series", uniqueConstraints = { @UniqueConstraint(columnNames = "seriesName") })
 public class Series implements Comparable<Series> {
+
 	@Id
-    @Column(name="id")
-	@Setter(value = AccessLevel.NONE)
-	private String id;
-	@NotBlank
-	private String seriesName;
-	@NotNull
+	@Column(name = "seriesId")
+	private Long id;
+
 	@Max(value = 70)
 	private int ageLimit;
+
+	@NotBlank
+	private String seriesName;
+
 	@NotBlank
 	private String genre;
+
 	@NotBlank
 	private String language;
-	@NotBlank
+
+	@NotNull
 	private String releaseDate;
-	private int length;
+
 	@NotBlank
 	private String trailer;
+
 	@NotBlank
 	private String cast;
-	@NotNull
+
 	@Min(value = 1)
 	private int noOfEpisodes;
 
-	public Series(String id,String seriesName, int ageLimit, String genre, String language, String releaseDate, int length,
-			String trailer, String cast, int noOfEpisodes) throws InvalidNameException, InvalidIdLengthException {
 
-		super();
-		this.setId(id);
+	public Series( int ageLimit,  String seriesName,  String genre,
+			 String language, String trailer,  String cast,
+			int noOfEpisodes, String releaseDate, List<Episodes> episodes) {
+		
+		this.ageLimit = ageLimit;
 		this.seriesName = seriesName;
-		this.ageLimit = (ageLimit);
-		this.cast = cast;
 		this.genre = genre;
-		this.length = length;
-		this.trailer = trailer;
-		this.releaseDate = releaseDate;
 		this.language = language;
+		this.trailer = trailer;
+		this.cast = cast;
 		this.noOfEpisodes = noOfEpisodes;
-
+		this.releaseDate = releaseDate;
+		this.episodes = episodes;
 	}
-
-	
-
 
 	@Override
 	public int compareTo(Series o) {
-		// TODO Auto-generated method stub
-		return this.id.compareTo(o.getId());
+		return o.id.compareTo(this.getId());
 	}
+	
 
-	public void setSeriesName(String seriesName) throws NameNotFoundException {
 
-		if(seriesName == null)
-			throw new NameNotFoundException("series name not found");
-		this.seriesName = seriesName;
-	}
-
-	public void setId(String id) throws InvalidIdLengthException {
-		if(id.length()<6)
-			throw new InvalidIdLengthException("id length less than 6");
-		this.id = id;
-	}
-	@OneToMany(mappedBy = "series",cascade=CascadeType.ALL)
-	private List<Episodes> episodes =new ArrayList<>();
+	@OneToMany(mappedBy = "Series", cascade = CascadeType.ALL)
+	private List<Episodes> episodes = new ArrayList<>();
 	
 }

@@ -57,7 +57,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
 		apiError.setMessage("Validation Error");
 		apiError.addValidationErrors(ex.getBindingResult().getFieldErrors()); //field wise errors
-		apiError.addValidationError1(ex.getBindingResult().getGlobalErrors());
+		apiError.addValidationError(ex.getBindingResult().getGlobalErrors());
 		return buiResponseEntity(apiError);
 	}
 	

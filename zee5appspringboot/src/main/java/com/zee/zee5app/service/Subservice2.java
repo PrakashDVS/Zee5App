@@ -10,9 +10,17 @@ import com.zee.zee5app.exception.InvalidAmountException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 
 public interface Subservice2 {
-	public String addSubscription(Subscription subscription) throws InvalidAmountException;
-	public String deleteSubscription(String id) throws IdNotFoundException, InvalidAmountException;
-	public String modifySubscription(String id, Subscription subscription);
-	public Optional<Subscription> getSubscriptionById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidAmountException;
-	public Optional<List<Subscription>> getAllSubscription() throws InvalidIdLengthException, InvalidAmountException;
+	public String updateSubscription(Long id, Subscription subscription) throws IdNotFoundException;
+	
+	//delete Subscription
+	public String deleteSubscription(Long id) throws IdNotFoundException;
+	
+	//get Subscription details based on id's
+	public Optional<Subscription> getSubscriptionById(Long id) throws IdNotFoundException, InvalidIdLengthException, InvalidAmountException;
+	
+	// to return all Subscription details
+	public Optional<List<Subscription>> getAllSubscription() ;
+	
+	// add a new subscription
+	public String addSubscription(Subscription subscription);
 }

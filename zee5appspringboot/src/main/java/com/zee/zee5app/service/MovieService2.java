@@ -13,10 +13,16 @@ import com.zee.zee5app.exception.NameNotFoundException;
 
 public interface MovieService2 {
 	public Movie addMovie(Movie movie);
-	public String deleteMovie(String id) throws IdNotFoundException;
-	public String modifyMovie(String id, Movie movie) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException;
-	public Optional<Movie> getMovieById(String id) throws IdNotFoundException, InvalidIdLengthException, InvalidNameException;
+
+	public String updateMovie(Long id, Movie movie) throws IdNotFoundException;
+
+	public String deleteMovie(Long id) throws IdNotFoundException;
+
+	public Optional<Movie> getMovieById(Long id)
+			throws IdNotFoundException, InvalidNameException, InvalidIdLengthException;
+
 	public Optional<Movie> getMovieByName(String name)
 			throws NameNotFoundException, LocationNotFoundException, InvalidNameException, InvalidIdLengthException;
-	public Optional<List<Movie>> getAllMovie() throws InvalidIdLengthException, InvalidNameException;
+
+	public Optional<List<Movie>> getAllMovie() ;
 }

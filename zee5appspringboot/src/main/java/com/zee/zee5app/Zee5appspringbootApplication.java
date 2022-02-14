@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import com.zee.zee5app.dto.Movie;
-import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.dto.User;
 import com.zee.zee5app.dto.Role;
 import com.zee.zee5app.dto.Subscription;
 import com.zee.zee5app.exception.AlreadyExistsException;
@@ -25,7 +25,10 @@ import com.zee.zee5app.exception.InvalidNameException;
 import com.zee.zee5app.exception.InvalidPasswordException;
 import com.zee.zee5app.repository.RoleRepository;
 import com.zee.zee5app.repository.UserRepository;
+import com.zee.zee5app.service.EpisodeService;
+import com.zee.zee5app.service.MovieService2;
 import com.zee.zee5app.service.RoleService;
+import com.zee.zee5app.service.SeriesService2;
 import com.zee.zee5app.service.Subservice2;
 import com.zee.zee5app.service.UserService;
 import com.zee.zee5app.service.impl.MovieServiceimpl;
@@ -37,83 +40,260 @@ import com.zee.zee5app.service.impl.UserServiceImpl;
 public class Zee5appspringbootApplication {
 
 	public static void main(String[] args) {
-		 ConfigurableApplicationContext applicationContext=SpringApplication.run(Zee5appspringbootApplication.class, args);
-		 
-//		 DataSource dataSource=applicationContext.getBean(DataSource.class);
-//		 
-//		 System.out.println(dataSource!=null);
-//		 Role role=new Role();
-//		 role.setRoleName(EROLE.ROLE_ADMIN);
-//		 
-//		 Role role2=new Role();
-//		 role2.setRoleName(EROLE.ROLE_USER);
-//		 
-		 RoleService roleservice=applicationContext.getBean(RoleService.class);
-		 RoleRepository roleRepository=applicationContext.getBean(RoleRepository.class);
-//		 System.out.println(roleservice.addRole(role));
-//		 System.out.println(roleservice.addRole(role2));
-		 
-		 UserServiceImpl service=applicationContext.getBean(UserServiceImpl.class);
-		 Register register = new Register("shannu33","shanmukh","narra","shannu33@gmail.com","S123456",null, null, null, null);
-		register.setContactNumber(new BigDecimal(981123));
 
-		 Set<Role> roles=new HashSet<>();
-		 roles.add(roleRepository.findById(1).get());
-		 roles.add(roleRepository.findById(2).get());
-		 register.setRoles(roles);
+		ConfigurableApplicationContext applicationContext = SpringApplication.run(Zee5appspringbootApplication.class,
+				args);
+
+		DataSource dataSource = applicationContext.getBean(DataSource.class);
+		System.out.println(dataSource != null);
+
+		UserRepository repoistory = applicationContext.getBean(UserRepository.class);
+
+		UserService service = applicationContext.getBean(UserService.class);
+		Subservice2 subscriptionService = applicationContext.getBean(Subservice2.class);
+		MovieService2 movieService = applicationContext.getBean(MovieService2.class);
+		SeriesService2 seriesService = applicationContext.getBean(SeriesService2.class);
+		EpisodeService episodeService = applicationContext.getBean(EpisodeService.class);
+
+		System.out.println(repoistory);
+
+		/*
+		 * DataSource dSource1 = applicationContext.getBean("ds",DataSource.class);
+		 * DataSource dSource2 = applicationContext.getBean("ds",DataSource.class);
+		 * 
+		 * System.out.println(dSource1.hashCode());
+		 * System.out.println(dSource2.hashCode());
+		 * System.out.println(dSource1.equals(dSource2));
+		 */
+/*
+		Register register = new Register("shri000263", "Shri", "V", "shri8@gmail.com", "335323",
+				new BigDecimal("9935569911"));
+		System.out.println(service.addUser(register));
+		
+		for(int i=1;i<=5;i++) {
+			subscription Subscription = new subscription();
+			Subscription.setId("sub00"+i);
+			Subscription.setDateOfPurchase("2022-0"+i+"-0"+i);
+			Subscription.setExpiryDate("2023-0"+i+"-0"+i);
+			Subscription.setAutoRenewal("Yes");
+			Subscription.setAmount(499);
+			Subscription.setType("Anuual");
+			Subscription.setPaymentMode("Debit");
+			Subscription.setRegId("reg00"+i);
+			Subscription.setStatus("Active");
+			subscriptionService.addSubscription(Subscription);
+		}
+		
+		for(int i=1;i<=5;i++) {
+			movies movie = new movies();
+			movie.setId("mov00"+i);
+			movie.setMovieName("Fast&Furious"+i);
+			movie.setAgeLimit(10);
+			movie.setCast("rock,xyz,abc");
+			movie.setGenre("action");
+			movie.setLanguage("English");
+			movie.setTrailer("https://youtube:sjdghcg9"+i);
+			movie.setReleaseDate("2022-0"+i+"-0"+i);
+			movie.setLength(7090+i);
+			movieService.addMovie(movie);
+		}
+		for (int i = 1; i <= 5; i++) {
+			series Series = new series();
+			Series.setId("ser00" + i);
+			Series.setSeriesName("Money Heist" + i);
+			Series.setAgeLimit(16);
+			Series.setCast("Berlin,Tokyo,abc");
+			Series.setGenre("Crime,Drama");
+			Series.setLanguage("English");
+			Series.setTrailer("https://youtube:sfgghcg9" + i);
+			Series.setReleaseDate("2022-0" + i + "-0" + i);
+			Series.setNoOfEpisodes(10);
+			seriesService.addSeries(Series);
+		}
+		for (int i = 1; i <= 5; i++) {
+			Episodes episodes = new Episodes();
+			episodes.setEpiId("epi00" + i);
+			episodes.setEpiLength(7080 + i);
+			episodes.setEpisodeName("episode" + i);
+			episodes.setLocation("India,US,Spain");
+			episodes.setTrailer("https://youtube:sfgghscg9" + i);
+			episodes.setSeriesId("ser00" + i);
+			try {
+				episodeService.addEpisode(episodes);
+			} catch (IdNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+*/
+//		
+//		try {
+//			Optional<Register> optional = service.getUserById("shri00261");
+//			if(optional.isEmpty()) {
+//				System.out.println("Not found");
+//			}else {
+//				System.out.println("User found "+optional.get());
+//			}
+//		} catch (InvalidNameException | IdNotFoundException | InvalidIdLengthException
+//				| com.zee.zee5app.exception.InvalidNameException | InvalidPasswordException | InvalidEmailException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		try {
+//			Optional<Subscription> optional = subscriptionService.getSubscriptionById("sub001");
+//			if(optional.isEmpty()) {
+//				System.out.println("Not found");
+//			}else {
+//				System.out.println("Subscription found "+optional.get());
+//			}
+//		} catch (IdNotFoundException |InvalidAmountException | InvalidIdLengthException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+//		
+//		try {
+//			Optional<Movies> optional = movieService.getMovieById("mov001");
+//			if(optional.isEmpty()) {
+//				System.out.println("Not found");
+//			}else {
+//				System.out.println("Movie found "+optional.get());
+//			}
+//		} catch (IdNotFoundException |InvalidIdLengthException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (InvalidNameException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+//		
+//		try {
+//			Optional<Series> optional = seriesService.getSeriesById("ser002");
+//			if(optional.isEmpty()) {
+//				System.out.println("Not found");
+//			}else {
+//				System.out.println("series found "+optional.get());
+//			}
+//		} catch (IdNotFoundException |InvalidIdLengthException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+//		
+//		try {
+//			Register[] list = service.getAllUsers();
+//			System.out.println(list) ;
+//		} catch (InvalidNameException | InvalidIdLengthException | InvalidEmailException | InvalidPasswordException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		String res;
+//		
+//		try {
+//			res = service.deleteUserById("shri000261");
+//			System.out.println("User deletion :"+res);
+//		} catch (IdNotFoundException e2) {
+//			// TODO Auto-generated catch block
+//			e2.printStackTrace();
+//		}
+//		
+//		try {
+//			res = subscriptionService.deleteSubscription("sub001");
+//			System.out.println("Subscription deletion :"+res);
+//		} catch (IdNotFoundException e2) {
+//			// TODO Auto-generated catch block
+//			e2.printStackTrace();
+//		}
+//		
+//		try {
+//			res = movieService.deleteMovie("mov001");
+//			System.out.println("Movie deletion :"+res);
+//		} catch (IdNotFoundException e2) {
+//			// TODO Auto-generated catch block
+//			e2.printStackTrace();
+//		}
+	/*	
 		try {
-			System.out.println(service.addUser(register));
-		} catch (AlreadyExistsException e1) {
+			res = seriesService.deleteSeries("ser001");
+			System.out.println("Series deletion :"+res);
+		} catch (IdNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
+		
+		Optional<List<Register>> optional;
+		try {
+			optional = service.getAllUserDetails();
+			if (optional.isEmpty()) {
+				System.out.println("there are no records");
+			}
+			else {
+				optional.get().forEach(e->System.out.println(e));
+			}
+		} catch (InvalidIdLengthException | InvalidNameException | InvalidEmailException | InvalidPasswordException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		 
-//		Register register2=new Register("vamsi12345","narra","vamsi","vamsi12345@gmail.com","vamsi@123");
-//		try {
-//			System.out.println(service.addUser(register2));
-//		} catch (AlreadyExistsException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		try {
-//			System.out.println(service.updateUser("vamsi05"));
-//		} catch (IdNotFoundException | InvalidNameException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		try {
-//			System.out.println(service.deleteUserById("vamsi05"));
-//		} catch (IdNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		service.addUser(register2);
-//		try {
-//			System.out.println(service.getAllUserDetails());
-//		} catch (InvalidEmailException | InvalidIdLengthException | InvalidNameException | InvalidPasswordException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		try {
-//			System.out.println(service.getAllUsers());
-//		} catch (InvalidEmailException | InvalidIdLengthException | InvalidNameException | InvalidPasswordException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		UserRepository userRepository=applicationContext.getBean(UserRepository.class);
-//		System.out.println(userRepository.existsByEmailAndFirstName("vamsi123@gmail.com","narra"));
 		
-//		//Movie
-//		Movieserviceimpl service2=applicationContext.getBean(Movieserviceimpl.class);
-//		Movie movie = new Movie("mov003","antim","action","2021-11-26","salman",160,"hindi","");
-//		System.out.println(service2.addMovie(movie));
-//		Movie movie2= new Movie("mov001","varudukavalenu","comedy","2022-1-10","salman",145,"telugu","");
-//		System.out.println(service2.addMovie(movie2));
-//		Movierepo movierepo=applicationContext.getBean(Movierepo.class);
-//		System.out.println(movierepo.findByMname("varudukavalenu"));
-//		System.out.println(movierepo.findByMnameAndMdor("antim","2021-11-26"));
-//		System.out.println(movierepo.findByMcast("salman"));
+		Optional<List<Subscription>> optional1;
+		try {
+			optional1 = subscriptionService.getAllSubscription();
+			if (optional1.isEmpty()) {
+				System.out.println("there are no records");
+			}
+			else {
+				optional1.get().forEach(e->System.out.println(e));
+			}
+		} catch (InvalidIdLengthException | InvalidAmountException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		Optional<List<Series>> optional3;
+		try {
+			optional3 = seriesService.getAllSeries();
+			if (optional3.isEmpty()) {
+				System.out.println("there are no records");
+			}
+			else {
+				optional3.get().forEach(e->System.out.println(e));
+			}
+		} catch (InvalidIdLengthException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		Optional<List<Episodes>> optional4;
+		try {
+			optional4 = episodeService.getAllEpisodeList();
+			if (optional4.isEmpty()) {
+				System.out.println("there are no records");
+			}
+			else {
+				optional4.get().forEach(e->System.out.println(e));
+			}
+		} catch (InvalidIdLengthException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		Optional<List<Movies>> optional5;
+		try {
+			optional5 = movieService.getAllMovie();
+			if (optional5.isEmpty()) {
+				System.out.println("there are no records");
+			}
+			else {
+				optional5.get().forEach(e->System.out.println(e));
+			}
+		} catch (InvalidIdLengthException | InvalidNameException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		*/
 		applicationContext.close();
+
 	}
 
 }

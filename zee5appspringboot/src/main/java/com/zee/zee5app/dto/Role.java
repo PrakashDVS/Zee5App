@@ -22,7 +22,7 @@ public class Role {
 	private int roleId;
 	
 	//it should be the value from available Enums
-	
+ 	
 	@Enumerated(EnumType.STRING)
 	@Column(length = 30)
 	private ERole roleName;

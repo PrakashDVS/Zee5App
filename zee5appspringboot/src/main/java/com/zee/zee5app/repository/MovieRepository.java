@@ -9,11 +9,12 @@ import org.springframework.stereotype.Repository;
 import com.zee.zee5app.dto.Movie;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, String> {
-
+public interface MovieRepository extends JpaRepository<Movie, Long> {
+	Boolean existsByMovieName(String movieName);
 //	Boolean findByLanguage(String language);
 	Optional<Movie> findByMovieNameAndLanguage(String movieName  , String language);
 	Optional<Movie> findByMovieNameAndReleaseDate(String movieName , String releaseDate);
-	Optional<List<Movie>> findByMovieName(String movieName);
-	List<Movie> findByCast(String cast);
+//	Optional<List<Movie>> findByMovieName(String movieName);
+	Optional<Movie> findByMovieName(String movieName);
+	Optional<List<Movie>>  findByCast(String cast);
 }

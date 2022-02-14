@@ -6,6 +6,8 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -28,46 +30,57 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Data
-@Setter
 @Getter
-@EqualsAndHashCode
+@Setter
 @ToString
+@EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "movieName")},name="movie")
-public class Movie implements Comparable<Movie>{
-	
+//@AllArgsConstructor
+@Entity // entity class is used for ORM
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = "movieName") }, name = "movies") // can be done this
+
+public class Movie implements Comparable<Movie> {
+
 	@Id
-    @Column(name="id")
-	@Setter(value = AccessLevel.NONE)
-	private String id;
-	@NotNull
-	@Setter(value = AccessLevel.NONE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "movId")
+	private Long id;
+
+	@NotBlank
 	private String movieName;
-	@NotNull
+
 	@Max(value = 70)
 	private int ageLimit;
-	@NotNull
+
+	@NotBlank
 	private String genre;
-	@NotNull
+
+	@NotBlank
 	private String language;
-@NotNull
-private String trailer;
+
+//	@Lob
+//	private byte[] trailer;
+	
+	private String trailer;
+
 	@NotBlank
 	private String cast;
-	@NotNull
-	private BigDecimal length;
-	@NotNull
-	private Date releaseDate;
 
-	public Movie(String id, String movieName, String genre, String language, @NotBlank Date releaseDate, @NotNull BigDecimal length,
-			@NotNull String trailer, String cast, int ageLimit) throws InvalidNameException, InvalidIdLengthException {
+	@NotNull
+	private int length;
 
-		super();
-		this.setId(id);
-		this.setMovieName(movieName);
+	@NotBlank
+	private String releaseDate;
+
+	@Override
+	public int compareTo(Movie o) {
+		return o.id.compareTo(this.getId());
+	}
+
+	public Movie(String movieName, int ageLimit, String genre, String language, String trailer, String cast,
+			int length, String releaseDate) {
+		// TODO Auto-generated constructor stub
+		this.movieName = movieName;
 		this.ageLimit = ageLimit;
 		this.genre = genre;
 		this.language = language;
@@ -75,28 +88,8 @@ private String trailer;
 		this.cast = cast;
 		this.length = length;
 		this.releaseDate = releaseDate;
-
 	}
 
-	public void setId(String id) throws InvalidIdLengthException {
-		if (id.length() < 6) {
-			throw new InvalidIdLengthException("id length is less than or equal to 6"); // throws exception
-		}
-		this.id = id;
-	}
-
-	public void setMovieName(String movieName) throws InvalidNameException {
-		if (movieName == null || movieName == "" || movieName.length() < 2) {
-			throw new InvalidNameException("Movie name not valid");
-		}
-		this.movieName = movieName;
-	}
-
-	@Override
-	public int compareTo(Movie o) {
-		return o.id.compareTo(this.getId());
-	}
-
-
+	
 
 }

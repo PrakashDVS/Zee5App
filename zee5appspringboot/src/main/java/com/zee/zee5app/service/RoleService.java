@@ -10,9 +10,6 @@ import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.NameNotFoundException;
 
 public interface RoleService {
-	public String addRole(Role role); 
-	public String deleteRole(int roleId) throws IdNotFoundException, NameNotFoundException;
-	public String modifyRole(int roleId, Role role) throws IdNotFoundException, InvalidIdLengthException, NameNotFoundException;
-	public Optional<Role> getRoleById(int roleId) throws IdNotFoundException, InvalidIdLengthException, NameNotFoundException;
-	public Optional<List<Role>> getAllRoles() throws InvalidIdLengthException, NameNotFoundException;
+	public String addRole(Role role);
+	public void deleteRole(int roleId);
 }
