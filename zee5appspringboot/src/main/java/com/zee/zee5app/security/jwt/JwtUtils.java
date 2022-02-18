@@ -19,52 +19,60 @@ import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
+//purpose of this class is generate the token
+//validate the token
 public class JwtUtils {
 
-	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-
-	// read jwtSecret
+	private static final Logger logger=LoggerFactory.getLogger(JwtUtils.class);
+	
+	
+	//read jwtSecret
 	@Value("${zee5app.app.jwtSecret}")
 	private String jwtSecret;
-
-	// read expire Value
+	
+	//read exp value
 	@Value("${zee5app.app.jwtExpirationMs}")
 	private int jwtExpiryValue;
-
-	// generate token
+	
 	public String generateToken(Authentication authentication) {
-		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+		//username
+		//issued @ when token is generated
+		//expiry:
+		//encryption strategy
+		
+		UserDetailsImpl userPrincipal=(UserDetailsImpl)authentication.getPrincipal();
 		return Jwts.builder().setSubject(userPrincipal.getUsername())
-			   .setIssuedAt(new Date())
-			   .setExpiration(new Date(new Date().getTime() + jwtExpiryValue))
-			   .signWith(SignatureAlgorithm.HS512, jwtSecret)
-			   .compact();
+		.setIssuedAt(new Date())
+		.setExpiration(new Date(new Date().getTime()+jwtExpiryValue))
+		.signWith(SignatureAlgorithm.HS512, jwtSecret)
+		.compact();
 	}
 	
 	public String getUserNameFromJwtToken(String authToken) {
+		
 		return Jwts.parser()
-				   .setSigningKey(jwtSecret)
-				   .parseClaimsJws(authToken)
-				   .getBody().getSubject();
+				.setSigningKey(jwtSecret)
+				.parseClaimsJws(authToken)
+				.getBody().getSubject();
 	}
 	
 	public boolean validateJwtToken(String authToken) {
-	    try {
-	        Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-	        return true;
-	      } catch (SignatureException e) {
-	        logger.error("Invalid JWT signature: {}", e.getMessage());
-	      } catch (MalformedJwtException e) {
-	        logger.error("Invalid JWT token: {}", e.getMessage());
-	      } catch (ExpiredJwtException e) {
-	        logger.error("JWT token is expired: {}", e.getMessage());
-	      } catch (UnsupportedJwtException e) {
-	        logger.error("JWT token is unsupported: {}", e.getMessage());
-	      } catch (IllegalArgumentException e) {
-	        logger.error("JWT claims string is empty: {}", e.getMessage());
-	      }
+		try {
+		      Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+		      return true;
+		    } catch (SignatureException e) {
+		      logger.error("Invalid JWT signature: {}", e.getMessage());
+		    } catch (MalformedJwtException e) {
+		      logger.error("Invalid JWT token: {}", e.getMessage());
+		    } catch (ExpiredJwtException e) {
+		      logger.error("JWT token is expired: {}", e.getMessage());
+		    } catch (UnsupportedJwtException e) {
+		      logger.error("JWT token is unsupported: {}", e.getMessage());
+		    } catch (IllegalArgumentException e) {
+		      logger.error("JWT claims string is empty: {}", e.getMessage());
+		    }
 
-	      return false;
+		    return false;
 	}
-
+	
 }

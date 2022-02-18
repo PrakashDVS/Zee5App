@@ -8,5 +8,5 @@ import com.learning.entity.Login;
 
 @Repository
 public interface LoginRepository extends JpaRepository<Login, String> {
-	Boolean existsByUserName(String userName);
+	Boolean existsByuserName(String userName);
 }

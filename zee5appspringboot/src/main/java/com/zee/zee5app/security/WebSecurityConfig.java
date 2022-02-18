@@ -23,7 +23,8 @@ import com.zee.zee5app.security.services.UserDetailsServiceImpl;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)  // pre/post authorize can be accessed by setting true
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+ 
+	
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 	
@@ -34,40 +35,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public AuthTokenFilter authenticationJwtTokenFilter() {
 		return new AuthTokenFilter();
 	}
-
+	
 	@Override
-	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-		// TODO Auto-generated method stub
+	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception{
+		
 		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 	
 	@Bean
 	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		// TODO Auto-generated method stub
+	public AuthenticationManager authenticationManagerBean() throws Exception{
 		return super.authenticationManagerBean();
 	}
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		// TODO Auto-generated method stub
 		return new BCryptPasswordEncoder();
 	}
 	
-	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// TODO Auto-generated method stub
-	    //to enable cross origin domain cors is used ... Cross-Site Request Forgery (CSRF)
 		
-		http.cors().and().csrf().disable()
-	      .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-	      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-	      .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-	      .antMatchers("/api/test/**").permitAll()
-	      .anyRequest().authenticated();
+		http.cors().and().csrf().disable().exceptionHandling()
+		.authenticationEntryPoint(unauthorizedHandler)
+		.and()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+		.authorizeHttpRequests().antMatchers("/api/auth/**").permitAll()
+		.antMatchers("/api/test/**").permitAll().anyRequest().authenticated();
 		
-		 http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);		
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		//super.configure(http);
 	}
+	
+	  
 	
 }

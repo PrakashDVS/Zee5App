@@ -9,7 +9,6 @@ import com.learning.entity.FoodType;
 import com.learning.exception.IdNotFoundException;
 import com.learning.repository.FoodTypeRepository;
 import com.learning.service.FoodTypeService;
-
 @Service
 public class FoodTypeServiceImpl implements FoodTypeService {
     

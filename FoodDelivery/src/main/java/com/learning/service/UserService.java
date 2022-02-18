@@ -15,10 +15,9 @@ import com.learning.exception.InvalidPasswordException;
 
 public interface UserService {
 	public Register addUser(Register register) throws AlreadyExistsException;
-	public Register updateUser(int id, Register register) throws IdNotFoundException;
-	public Register getUserById(int id) throws IdNotFoundException, InvalidPasswordException;
+	public Register updateUser(Long id, Register register) throws IdNotFoundException;
+	public Register getUserById(Long id) throws IdNotFoundException, InvalidPasswordException;
 	public Register[] getAllUsers() throws   InvalidPasswordException;
-	public String deleteUserById(int id) throws IdNotFoundException, InvalidPasswordException;
+	public String deleteUserById(Long id) throws IdNotFoundException, InvalidPasswordException;
 	public Optional<List<Register>> getAllUserDetails() throws  InvalidPasswordException;
-	public String authenticate(String email , String password);
 }

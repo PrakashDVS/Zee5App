@@ -1,5 +1,6 @@
 package com.zee.zee5app.dto;
 
+import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashSet;
@@ -44,12 +45,12 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode
-@NoArgsConstructor
+//@NoArgsConstructor
 //@AllArgsConstructor
 // ORM mapping purpose
 @Entity // entity class is used for ORM
 //customize table name
-@Table(name = "user", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
+@Table(name = "register", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
 											@UniqueConstraint(columnNames = "email") })
 
 public class User implements Comparable<User> {
@@ -81,6 +82,9 @@ public class User implements Comparable<User> {
 
 	private BigInteger contactNumber;
 
+	public User() {
+		System.out.println("hi shanmukh");
+	}
 	 public User(String username, String email, String password, String firstName, String lastName) {
 		    this.username = username;
 		    this.email = email;
@@ -106,7 +110,7 @@ public class User implements Comparable<User> {
 	// registered user(regid) and role(roleid) //this is primary key of first table
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "regId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	// above one is primary key of another table
-	private Set<Role> roles = new HashSet<>();
+	private Set<Role> role = new HashSet<>();
 	
 /*
 //	@JsonIgnore

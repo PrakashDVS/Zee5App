@@ -3,11 +3,10 @@ spring:
     url: jdbc:mysql://localhost:3306/zee5appjpa
     username: root
     password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     properties:
       hibernate:
-        dialect:  org.hibernate.dialect.MySQL8Dialect
+        dialect:spring.jpa.properties.hibernate.dialect
     show-sql: true
     
     hibernate:
@@ -15,7 +14,10 @@ spring:
         physical-strategy: com.zee.zee5app.utils.CustomNamingStrategy
       ddl-auto: update
 server:
-  port: 9005
-  servlet:
-    context-path: /api
+  port: 9006
+  
+zee5app:
+  app:
+    jwtSecret: secretkey
+    jwtExpirationMs: 86400000
         

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import com.zee.zee5app.payload.request.MovieRequest;
 import com.zee.zee5app.payload.response.MessageResponse;
 import com.zee.zee5app.repository.MovieRepository;
 import com.zee.zee5app.service.MovieService2;
+@CrossOrigin("*")
 
 @RestController
 @RequestMapping("/api/movies")

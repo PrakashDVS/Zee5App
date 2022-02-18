@@ -17,8 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
-public class AuthEntryPointJwt implements AuthenticationEntryPoint 
-{
+public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 	 private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
 	  @Override
@@ -27,9 +26,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint
 	    logger.error("Unauthorized error: {}", authException.getMessage());
 
 	    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-	    // this response it is of json type.
 	    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	    // status code as unauthorized
 
 	    final Map<String, Object> body = new HashMap<>();
 	    body.put("status", HttpServletResponse.SC_UNAUTHORIZED);

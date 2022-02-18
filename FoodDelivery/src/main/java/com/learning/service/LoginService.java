@@ -8,5 +8,7 @@ public interface LoginService {
 
 	public String deleteCredentials(String userName) throws IdNotFoundException;
 
-	public String changePassword(String userName,String password);
+	public String changePassword(String userName,String password) throws IdNotFoundException;
+	public String vaidateCredentials(Login login);
+
 }

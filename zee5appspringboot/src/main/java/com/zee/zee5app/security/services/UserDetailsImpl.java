@@ -41,15 +41,16 @@ public class UserDetailsImpl implements UserDetails {
 	// here we have used builder design pattern
 	public static UserDetailsImpl build(User user) {
 		
-		List<GrantedAuthority> authorities = user.getRoles()
+		List<GrantedAuthority> authorities = user.getRole()
 												 .stream() // it will transform ur set to stream (flow of data)
 												 .map(role -> new SimpleGrantedAuthority(role.getRoleName().toString()))
 												 .collect(Collectors.toList());
 		return new UserDetailsImpl(user.getId(), 
 								   user.getUsername(), 
 								   user.getEmail(), 
-								   user.getPassword(), 
-								   authorities);
+								   user.getPassword(),
+								   authorities
+								   );
 	}
 
 

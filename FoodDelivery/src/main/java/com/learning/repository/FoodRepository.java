@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.learning.entity.Food;
 
 @Repository
-public interface FoodRepository extends JpaRepository<Food, String> {
+public interface FoodRepository extends JpaRepository<Food, Long> {
 	
 
 }

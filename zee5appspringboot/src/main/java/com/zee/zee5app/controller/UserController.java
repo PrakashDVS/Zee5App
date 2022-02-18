@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,15 +45,14 @@ import com.zee.zee5app.security.jwt.JwtUtils;
 import com.zee.zee5app.security.services.UserDetailsImpl;
 import com.zee.zee5app.service.UserService;
 import com.zee.zee5app.service.impl.UserServiceImpl;
-
+@CrossOrigin("*")
 @RestController
 //REST API: RESPONSE wherever we have to share the response that method  must be marked with @ResponseBody
 
 //1000emethods ---> @Responsebody ---> 1000times so they introduced @RestController
 @RequestMapping("/api/auth")
 public class UserController {
-
-	
+	 
 	@Autowired
 	UserService userService;
 	
@@ -74,25 +74,24 @@ public class UserController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
 		
-		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername()
-						, loginRequest.getPassword()));
+		Authentication authentication=authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(
+						loginRequest.getUsername(), loginRequest.getPassword()));
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateToken(authentication);
-		UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
 		
-		List<String> roles = userDetailsImpl.getAuthorities()
-				.stream()
-				.map(i->i.getAuthority())
+		String jwt=jwtUtils.generateToken(authentication);
+		UserDetailsImpl userDetailsImpl=(UserDetailsImpl)authentication.getPrincipal();
+		
+		List<String> roles=userDetailsImpl.getAuthorities()
+				.stream().map(i->i.getAuthority())
 				.collect(Collectors.toList());
 		
 		
-	
 		return ResponseEntity.ok(new JwtResponse(jwt,
 				userDetailsImpl.getId(),
-				userDetailsImpl.getUsername(),
-				userDetailsImpl.getEmail(),
+				userDetailsImpl.getUsername(), 
+				userDetailsImpl.getEmail(), 
 				roles));
 	}
 	
@@ -100,91 +99,98 @@ public class UserController {
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest){
 		
 		if(userRepository.existsByUsername(signupRequest.getUsername())) {
-			return ResponseEntity.badRequest()
-								 .body(new MessageResponse("Error: Username already taken!"));
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: Username is already taken!"));
 		}
 		
 		if(userRepository.existsByEmail(signupRequest.getEmail())) {
-			return ResponseEntity.badRequest()
-								 .body(new MessageResponse("Error: Email is already in use!"));
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error: Email is already use!"));
 		}
 		
-		//user's account	
-		User user  = new User(signupRequest.getUsername(), 
-				  signupRequest.getEmail(), 
-				  passwordEncoder.encode(signupRequest.getPassword()),
-				  signupRequest.getFirstName(), 
-				  signupRequest.getLastName());
-		
-		//retreiving role details	
-		Set<String> strRoles = signupRequest.getRole();
-		
-		Set<Role> roles =  new HashSet<>();
-		
-		if(strRoles == null) {
-			Role userRole = roleRepository.findByRoleName(ERole.ROLE_USER)
-					.orElseThrow(() -> new RuntimeException("Error: role not found"));
-			roles.add(userRole);
+		User user=new User(signupRequest.getUsername(),
+				signupRequest.getFirstName(),
+				signupRequest.getLastName(),
+				signupRequest.getEmail(),
+				passwordEncoder.encode(signupRequest.getPassword()));
 			
-		} else {
-			strRoles.forEach(e -> {
-				switch (e) {
+		Set<String> strRoles=signupRequest.getRoles();
+		
+		Set<Role> roles=new HashSet<>();
+		
+		if(strRoles==null) {
+			Role userRole=roleRepository.findByRoleName(ERole.ROLE_USER)
+					.orElseThrow(()->new RuntimeException("Error:role not found"));
+		}
+		else {
+			strRoles.forEach(e->{
+				switch(e) {
+				 
 				case "admin":
 					Role roleAdmin = roleRepository.findByRoleName(ERole.ROLE_ADMIN)
-							.orElseThrow(() -> new RuntimeException("Error: role not found"));
+					                 .orElseThrow(()->new RuntimeException("Error:role not found"));
 					roles.add(roleAdmin);
-					break;
-
-				case "mod":
+				    break;
+				
+				case "mod" :
 					Role roleMod = roleRepository.findByRoleName(ERole.ROLE_MODERATOR)
-							.orElseThrow(() -> new RuntimeException("Error: role not found"));
-					roles.add(roleMod);
-					break;
-
+	                 .orElseThrow(()->new RuntimeException("Error:role not found"));
+	                 roles.add(roleMod);
+                      break;
+					
+					
+						
 				default:
-					break;
+					Role userRole = roleRepository.findByRoleName(ERole.ROLE_USER)
+	                 .orElseThrow(()->new RuntimeException("Error:role not found"));
+	                 roles.add(userRole);
+                     
 				}
 			});
+			
+			
 		}
-		
-		user.setRoles(roles);
-//		System.out.println(user);
-		userRepository.save(user);		
-		return ResponseEntity.status(201).body(new MessageResponse("User created successfully"));
+		user.setRole(roles);
+		userRepository.save(user);
+		return ResponseEntity.status(201).body(new MessageResponse("user created sucessfully"));
+//		
 	}
 	
-
-/*
-	// adding user info into the table
-	// info will be shared by the client in terms of JSON object
-	// do we need to read that json Object? ===> yes 15 // where is this json object
-	// is available in request? => requestbody
-	// do we need to read that requestbody content ? yes
-	// do we need to transform json object to Java object?yes ==> @RequestBody
+	//adding user info into the table
+	//info will be shared by the client in terms of json object
 	
-	@PostMapping("/addUser")
-	public ResponseEntity<?> addUser(@Valid @RequestBody User register) throws AlreadyExistsException {
-		User result;
-		result = userService.addUser(register);
-		System.out.println(result);
-		return ResponseEntity.status(201).body(result);
-	}
-	@GetMapping("/{id}")
-	public ResponseEntity<?> getUserById(@PathVariable("id") Long id) throws IdNotFoundException{
-		User register = userService.getUserById(id);
-		return ResponseEntity.ok(register);
-	}
-	@GetMapping("/all")
-	public ResponseEntity<?> getAllUsers() {
-		Optional<List<User>> optional = userService.getAllUserDetails();
-		
-		if(optional.isEmpty()) {
-//			Map<String, String> hashMap = new HashMap<>();
-//			hashMap.put("message", "No record found");
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("No record found"));
-		}
-		return ResponseEntity.ok(optional.get());
-	}
-*/
+	
+//	@PostMapping("/addUser")
+//	public ResponseEntity<?> addUser(@RequestBody User register) throws AlreadyExistsException {
+//		
+//			User result=userService.addUser(register);
+//			System.out.println(result);
+//		
+//			return ResponseEntity.status(201).body(result);	
+//		
+//	}
+//	
+//	@GetMapping("/{id}")
+//	public ResponseEntity<?> getUserById(@PathVariable("id") Long id) throws IdNotFoundException{
+//		userService.getUserById(id);
+//		return ResponseEntity.ok(id);
+//	}
+//	
+//	@GetMapping("/all")
+//	@PreAuthorize(value = "")
+//	@PostAuthorize(value = "")
+//	public ResponseEntity<?> getAllUserDetails() throws InvalidEmailException, InvalidIdLengthException, InvalidNameException, InvalidPasswordException{
+//		Optional<List<User>> optional=userService.getAllUserDetails();
+//		if(optional.isEmpty()) {
+////			HashMap<String, String> map=new HashMap<>();
+////			map.put("messeage", "no record found");
+//			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageResponse("no record found"));
+//		}
+//		return ResponseEntity.ok(optional.get());
+//	}
+	
+	
 	
 }

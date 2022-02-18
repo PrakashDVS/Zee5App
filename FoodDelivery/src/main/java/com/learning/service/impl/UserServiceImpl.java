@@ -18,25 +18,31 @@ import com.learning.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-	@Autowired
-	private UserRepository repository;
-	@Autowired
-	private LoginService service;
-	@Autowired
-	private LoginRepository loginRepository;
 	
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	LoginService loginService;
+	
+	@Autowired
+	LoginRepository loginRepository;
+    
+	//Insert a new record in the table
 	@Override
 	@org.springframework.transaction.annotation.Transactional(rollbackFor = AlreadyExistsException.class)
 	public Register addUser(Register register) throws AlreadyExistsException {
 		// TODO Auto-generated method stub
-		boolean status = repository.existsByEmailAndPassword(register.getEmail(), register.getPassword()) ;
+		boolean status = userRepository.existsByEmail(register.getEmail()) ;
 		if(status) {
 			throw new AlreadyExistsException("this record already exists");
 		}
-		Register register2 = repository.save(register);
+		Register register2 = userRepository.save(register);
 		if (register2 != null) {
-			Login login = new Login(register2.getEmail(), register2.getPassword());
-			String result = service.addCredentials(login);
+			Login login = new Login(register.getEmail(), register.getPassword(),register2);
+			
+			String result = loginService.addCredentials(login);
 			if(result == "success") {
 					//return "record added in register and login";
 				return register2;
@@ -49,40 +55,45 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 	}
-
-	
+    
+	//Updating the existing record
 	@Override
-	public Register getUserById(int id) throws IdNotFoundException, InvalidPasswordException {
+	public Register updateUser(Long id, Register register) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		Optional<Register> optional =  repository.findById(id);
+		if(!this.userRepository.existsById(id))
+			throw new IdNotFoundException("Sorry user with " + register.getId() + " not found");
+		
+		return userRepository.save(register);
+	}
+    
+	//retrive a record by id
+	@Override
+	public Register getUserById(Long id) throws IdNotFoundException {
+		// TODO Auto-generated method stub
+		Register register = new Register();
+		Optional<Register> optional =  userRepository.findById(id);
 		if(optional.isEmpty()) {
-			throw new IdNotFoundException("id does not exists");
+			throw new IdNotFoundException("Sorry user with " + register.getId() + " not found");
 		}
 		else {
 			return optional.get();
 		}
 	}
-
+    
+	//Delete the record by id
 	@Override
-	public Register[] getAllUsers()
-			throws  InvalidPasswordException {
-		// TODO Auto-generated method stub
-		List<Register> list = repository.findAll();
-		Register[] array = new Register[list.size()];
-		return list.toArray(array);	}
-
-	@Override
-	public String deleteUserById(int id) throws IdNotFoundException, InvalidPasswordException {
+	public String deleteUserById(Long id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		Register optional;
+		Register register = new Register();
 		try {
 			optional = this.getUserById(id);
 			if(optional==null) {
-				throw new IdNotFoundException("record not found");
+				throw new IdNotFoundException("Sorry user with " + register.getId() + " not found");
 			}
 			else {
-				repository.deleteById(id);
-				return "register record deleted";
+				userRepository.deleteById(id);
+				return "User deleted successfully";
 			}
 		} catch (IdNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -90,37 +101,18 @@ public class UserServiceImpl implements UserService {
 			throw new IdNotFoundException(e.getMessage());
 		}
 	}
-
+    
+	//Retrieve all details
 	@Override
-	public Optional<List<Register>> getAllUserDetails()
-			throws InvalidPasswordException {
+	public Optional<List<Register>> getAllUserDetails() {
 		// TODO Auto-generated method stub
-		return Optional.ofNullable(repository.findAll());
-
-	}
-
-	
-
-
-	@Override
-	public String authenticate(String email, String password) {
-		// TODO Auto-generated method stub
-		boolean status = repository.existsByEmailAndPassword(email, password) ;
-		if(status) {
-			return "success";
-		}
-	
-		return "fail"; 
-
+		return Optional.ofNullable(userRepository.findAll());
 	}
 
 	@Override
-	public Register updateUser(int id, Register register) throws IdNotFoundException {
+	public Register[] getAllUsers() throws InvalidPasswordException {
 		// TODO Auto-generated method stub
-		if(!this.repository.existsById(id))
-			throw new IdNotFoundException("invalid id");
-		
-		return repository.save(register);
+		return null;
 	}
 
 }

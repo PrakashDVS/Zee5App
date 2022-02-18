@@ -44,7 +44,11 @@ import lombok.NoArgsConstructor;
 			return o.userName.compareTo(this.getUserName());
 		}
 
-
+		 @OneToOne(fetch = FetchType.LAZY)
+		  @JoinColumn(name="regId")
+		  @JsonIgnoreProperties({"hibernateLazyIntializer","handler"})
+		  @JsonProperty(access = Access.WRITE_ONLY)
+		  private Register register;
 		
 	}
 

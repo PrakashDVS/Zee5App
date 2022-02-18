@@ -44,18 +44,18 @@ public class Zee5appspringbootApplication {
 		ConfigurableApplicationContext applicationContext = SpringApplication.run(Zee5appspringbootApplication.class,
 				args);
 
-		DataSource dataSource = applicationContext.getBean(DataSource.class);
-		System.out.println(dataSource != null);
-
-		UserRepository repoistory = applicationContext.getBean(UserRepository.class);
-
-		UserService service = applicationContext.getBean(UserService.class);
-		Subservice2 subscriptionService = applicationContext.getBean(Subservice2.class);
-		MovieService2 movieService = applicationContext.getBean(MovieService2.class);
-		SeriesService2 seriesService = applicationContext.getBean(SeriesService2.class);
-		EpisodeService episodeService = applicationContext.getBean(EpisodeService.class);
-
-		System.out.println(repoistory);
+//		DataSource dataSource = applicationContext.getBean(DataSource.class);
+//		System.out.println(dataSource != null);
+//
+//		UserRepository repoistory = applicationContext.getBean(UserRepository.class);
+//
+//		UserService service = applicationContext.getBean(UserService.class);
+//		Subservice2 subscriptionService = applicationContext.getBean(Subservice2.class);
+//		MovieService2 movieService = applicationContext.getBean(MovieService2.class);
+//		SeriesService2 seriesService = applicationContext.getBean(SeriesService2.class);
+//		EpisodeService episodeService = applicationContext.getBean(EpisodeService.class);
+//
+//		System.out.println(repoistory);
 
 		/*
 		 * DataSource dSource1 = applicationContext.getBean("ds",DataSource.class);
@@ -292,7 +292,7 @@ public class Zee5appspringbootApplication {
 			e1.printStackTrace();
 		}
 		*/
-		applicationContext.close();
+//		applicationContext.close();
 
 	}
 
