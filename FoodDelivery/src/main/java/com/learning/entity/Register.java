@@ -113,4 +113,7 @@ public class Register implements Comparable<Register> {
 		@JoinTable(name="user_roles",joinColumns = @JoinColumn(name="regId"),inverseJoinColumns = @JoinColumn(name="roleId"))
 		private Set<Role> roles=new HashSet<>();
 
+	 
+	 @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+		private Login login;
 }
